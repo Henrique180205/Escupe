@@ -1,0 +1,78 @@
+﻿@model escupe.ViewModels.CadastroEmpresaViewModel
+
+
+
+<div class="step">
+    <h2>Dados da Empresa</h2>
+    <div class="inputs-container">
+        <div>
+            <label asp-for="RazaoSocial"></label>
+            <input asp-for="RazaoSocial" class="form-control" required />
+            <span asp-validation-for="RazaoSocial" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="NomeFantasia"></label>
+            <input asp-for="NomeFantasia" class="form-control" required />
+            <span asp-validation-for="NomeFantasia" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="CNPJ"></label>
+            <input asp-for="CNPJ" class="form-control" maxlength="14" required />
+            <span asp-validation-for="CNPJ" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="AreaAtuacao"></label>
+            <select asp-for="AreaAtuacao" class="form-control" required>
+                <option value="">Selecione</option>
+                <option value="administracao">Administração</option>
+                <option value="tecnologia">Tecnologia da Informação</option>
+                <option value="comercio">Comércio / Varejo</option>
+                <option value="educacao">Educação</option>
+                <option value="saude">Saúde</option>
+                <option value="industria">Indústria</option>
+                <option value="servicos">Serviços Gerais</option>
+                <option value="outros">Outros</option>
+            </select>
+            <span asp-validation-for="AreaAtuacao" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="CEP"></label>
+            <input asp-for="CEP" class="form-control" maxlength="8" required />
+            <span asp-validation-for="CEP" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Logradouro"></label>
+            <input asp-for="Logradouro" class="form-control" required />
+            <span asp-validation-for="Logradouro" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Numero"></label>
+            <input asp-for="Numero" class="form-control" required />
+            <span asp-validation-for="Numero" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Complemento"></label>
+            <input asp-for="Complemento" class="form-control" />
+            <span asp-validation-for="Complemento" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Bairro"></label>
+            <input asp-for="Bairro" class="form-control" required />
+            <span asp-validation-for="Bairro" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Cidade"></label>
+            <input asp-for="Cidade" class="form-control" required />
+            <span asp-validation-for="Cidade" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="UF"></label>
+            <input asp-for="UF" class="form-control" maxlength="2" required />
+            <span asp-validation-for="UF" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="botoes">
+        <button type="button" class="botao" onclick="voltarEtapa()">Voltar</button>
+        <button type="submit" class="botao">Concluir Cadastro</button>
+    </div>
+</div>

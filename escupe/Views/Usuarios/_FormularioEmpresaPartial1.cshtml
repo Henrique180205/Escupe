@@ -1,0 +1,25 @@
+﻿
+
+@model escupe.ViewModels.CadastroEmpresaViewModel
+
+<link rel="stylesheet" href="~/css/style.css" />
+
+<form asp-controller="Usuarios" asp-action="FormularioEmpresaEtapa1" method="post" id="formulario" autocomplete="off">
+    <input type="hidden" asp-for="TipoUsuario" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <label asp-for="Telefone"></label>
+        <input asp-for="Telefone" class="form-control" id="Telefone" />
+    </div>
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" id="Email" />
+    </div>
+    <div>
+        <label asp-for="Senha"></label>
+        <input asp-for="Senha" class="form-control" id="Senha" type="password" />
+    </div>
+    <div class="botoes">
+        <button type="submit" class="botao" id="btn-continuar">Continuar</button>
+    </div>
+</form>

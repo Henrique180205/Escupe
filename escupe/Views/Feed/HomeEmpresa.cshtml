@@ -1,0 +1,41 @@
+﻿@model escupe.ViewModels.HomeEmpresaViewModel
+@{
+    ViewData["Title"] = "Painel da Empresa - Esculp";
+  
+}
+
+<div class="empresa-dashboard">
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="~/imagens/icone.png" alt="Logo Esculp" class="logo" />
+            <span class="brand-title">Esculp</span>
+        </div>
+        <div class="navbar-profile">
+            <a asp-controller="Feed" asp-action="PerfilEmpresa" title="Perfil da Empresa">
+                <svg xmlns="http://www.w3.org/2000/svg" class="perfil-icon" viewBox="0 0 24 24" width="28" height="28">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <section class="dashboard-content">
+        <div class="actions">
+            <a asp-controller="Feed" asp-action="CriarVaga" class="action-card">
+                <div class="action-icon">&#x2795;</div>
+                <div class="action-info">
+                    <h3>Criar Nova Vaga</h3>
+                    <p>Cadastre uma nova vaga para encontrar candidatos ideais.</p>
+                </div>
+            </a>
+        </div>
+    </section>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/criarvagas.css" />
+}
+
+@section Scripts {
+    <script src="~/js/empresa-dashboard.js"></script>
+}

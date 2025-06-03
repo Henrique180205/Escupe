@@ -1,0 +1,161 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+.cabecalho {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.cabecalho h1 {
+  font-size: 2.5rem;
+  color: #222;
+}
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-vaga .campo {
+  margin-bottom: 20px;
+}
+
+.form-vaga label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.form-vaga input,
+.form-vaga textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form-vaga button {
+  background-color: #2755F8;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-vaga button:hover {
+  background-color: #1e3ecf;
+}
+.site-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f4f4f4
+}
+
+.icone-container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.site-logo {
+  width: 100px; 
+  height: auto;
+}
+
+.site-nome {
+  font-size: 3.6rem; 
+  color: #007BFF;
+  margin-left: 15px;
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  .site-logo {
+    width: 60px;
+  }
+
+  .site-nome {
+    font-size: 2rem;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+}
+
+/* Telas pequenas: celulares */
+@media (max-width: 480px) {
+  .site-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .site-nome {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .form-container {
+    padding: 15px;
+  }
+
+  .form-vaga input,
+  .form-vaga textarea {
+    font-size: 0.9rem;
+  }
+
+  .form-vaga button {
+    width: 100%; 
+    padding: 12px;
+  }
+}
+   .mensagem-flutuante {
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      font-size: 1em;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: none; 
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+      transform: translateY(20px); 
+    }
+
+    .mensagem-flutuante.sucesso {
+      background-color: #28a745; 
+      color: white;
+      border: 1px solid #1e7e34;
+    }
+
+    .mensagem-flutuante.erro { 
+      background-color: #dc3545; 
+      color: white;
+      border: 1px solid #bd2130;
+    }
+
+    .mensagem-flutuante.visivel {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }

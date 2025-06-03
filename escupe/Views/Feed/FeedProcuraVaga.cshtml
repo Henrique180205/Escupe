@@ -1,0 +1,47 @@
+﻿@model escupe.ViewModels.FeedVagaViewModel
+
+@{
+    Layout = null; // Se não houver um layout compartilhado
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de vagas</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/vagas.css")">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <header class="site-header">
+        <a href="@Url.Action("Index", "Home")" class="icone-container">
+            <img src="@Url.Content("~/imagens/icone.png")" alt="Logo do Site" class="site-logo">
+            <span class="site-nome">Esculp</span>
+        </a>
+    </header>
+    <div>
+        <section class="buscar-container">
+            <h1>Sua procura pelo primeiro emprego começa aqui!</h1>
+            <p>Encontre a sua primeira oportunidade perfeita.</p>
+            <form class="busca-form" method="get" action="@Url.Action("FeedVaga", "Feed")">
+
+                <input type="text" name="cargo" placeholder="Procure por cargo, vaga ou setor">
+                <input type="text" name="localizacao" placeholder="Cidade, estado ou remoto">
+                <button type="submit">
+                    <h1>Procurar</h1>
+                </button>
+            </form>
+            <div class="svg-inferior">
+                <img src="@Url.Content("~/imagens/image (4).svg")" alt="decoração inferior esquerda">
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p><strong>Contato:</strong> EmpresaEsculp@gmail.com</p>
+        <p><strong>Busque por:</strong> Empresas, Vagas, Oportunidade</p>
+        <strong>Copyright © 2025. Esculp LLC. “Esculp” o logotipo do Esculp são marcas comerciais pertencentes à Esculp LLC.</strong>
+    </footer>
+</body>
+</html>

@@ -1,12 +1,142 @@
-﻿@{
-    ViewData["Title"] = "EscupeCarreiras - Primeiro Emprego";
+﻿@model escupe.Models.LoginModel
+@{
+    ViewData["Title"] = "Login";
 }
+<h2>Login</h2>
 
-<div class="hero-section">
-    <h1>Encontre seu primeiro emprego!</h1>
-    <p>Conectamos você a empresas que valorizam potencial, não experiência.</p>
-    <div class="cta-buttons">
-        <a href="/Candidato/Cadastro" class="btn btn-primary">Sou Candidato</a>
-        <a href="/Empresa/Cadastro" class="btn btn-secondary">Sou Empresa</a>
+@* Exibe mensagens de erro *@
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<form asp-action="Login" method="post">
+    <!-- Campos do formulário -->
+</form>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Esculp</title>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="icon" href="~/imagens/favicon.png" type="image/png" />
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <img src="~/imagens/imgsuperior.svg" alt="Escultura" id="escultura-img" />
+
+    <header class="site-header">
+        <a href="/" class="icone-container">
+            <img src="~/imagens/icone.png" alt="Logo do Site" class="site-logo" />
+            <span class="site-nome">Esculp</span>
+        </a>
+
+       
+
+    <main class="vertical-container">
+        <section class="login-container">
+            <h1>De o primeiro passo na sua carreira com apoio e oportunidade.</h1>
+
+            <form asp-action="Login" method="post" class="login-form" id="loginForm">
+                <h2>Insira o e-mail ou CNPJ</h2>
+                <input asp-for="Email" type="text" placeholder="Insira seu e-mail" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <h2>Insira a senha</h2>
+                <input asp-for="Senha" type="password" placeholder="Insira sua senha" required />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+                    <button type="submit" class="btn-entrar">
+                        Entrar
+                    </button>
+                <div class="divisor">
+                    <div class="divisor-line"></div>
+                    <div class="divisor-texto">ou</div>
+                    <div class="divisor-line"></div>
+                </div>
+                    <h2 id="primeira-vez">
+                        Primeira vez aqui? <a asp-controller="Home" asp-action="EscolhaTipo" id="crie-conta-link">Crie a sua conta</a>
+                    </h2>
+            </form>
+                
+     </main>
+        </section>
+
+            <div class="svg-inferior">
+                <img src="~/imagens/svg-inferior.svg" alt="decoração inferior esquerda" />
+            </div>
+        
+
+        <section class="section-candidatos">
+            <div class="textos-superiores">
+                <h1 class="titulos">Oportunidade para quem quer começar!</h1>
+                <p>
+                    Aqui damos voz e vez a quem ainda não teve chance de mostrar seu potencial. Acreditamos que nenhuma
+                    experiência é pequena demais e que todo mundo merece uma primeira oportunidade.
+                </p>
+            </div>
+
+            <div class="para-candidatos">
+                <div class="circles-container">
+                    <div class="circle-item">
+                        <div class="circle">
+                            <img src="~/imagens/bandeira.png" alt="imagem de uma bandeira de corrida" />
+                        </div>
+                        <h3>Para quem está começando</h3>
+                        <p>Ideal para quem não tem experiência profissional ou acadêmica</p>
+                    </div>
+
+                    <div class="vertical-container">
+                        <div class="circle">
+                            <img src="~/imagens/maleta.png" alt="imagem de uma maleta" />
+                        </div>
+                        <h3>Oportunidades reais</h3>
+                        <p>Empresas dispostas a ensinar, treinar e formar novos talentos</p>
+                    </div>
+
+                    <div class="circle-item">
+                        <div class="circle">
+                            <img src="~/imagens/prancheta.png" alt="imagem de uma prancheta" />
+                        </div>
+                        <h3>Cadastro fácil e gratuito</h3>
+                        <p>Crie seu perfil em minutos e comece a se candidatar</p>
+                    </div>
+
+                    <div class="circle-item">
+                        <div class="circle">
+                            <img src="~/imagens/seta.png" alt="imagem de uma seta" />
+                        </div>
+                        <h3>Inclusão e crescimento</h3>
+                        <p>Seu esforço e vontade de aprender são o que mais importa aqui</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="para-empresa">
+            <h1 class="titulos">Oportunidade para se apresentar a sua empresa!</h1>
+            <div class="underline"></div>
+            <p>
+                Os candidatos estão visitando a página da sua empresa no Esculp. Controle a narrativa e mostre a eles por
+                que eles devem fazer parte de sua equipe.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>Contato:</strong> EmpresaEsculp@gmail.com</p>
+        <p><strong>Busque por:</strong> Empresas, Vagas, Oportunidade</p>
+        <strong>Copyright © 2025. Esculp LLC. “Esculp” o logotipo do Esculp são marcas comerciais pertencentes à Esculp LLC.</strong>
+    </footer>
+
+    <!-- Modal -->
+    <div id="tipoCadastroModal" class="modal">
+        <div class="modal-content">
+            <h2>Você é um candidato ou uma empresa?</h2>
+            <div>
+                <button id="btnCandidato">Candidato</button>
+                <button id="btnEmpresa">Empresa</button>
+            </div>
+        </div>
     </div>
-</div>
+
+    <script src="~/js/scriptfront.js"></script>
+</body>
+</html>

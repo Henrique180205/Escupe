@@ -1,0 +1,29 @@
+﻿@model escupe.ViewModels.EscolhaTipoViewModel
+
+<section class="login-container">
+    <h2 class="text-center mb-4">Escolha seu tipo de cadastro</h2>
+
+    <form asp-action="EscolhaTipo" asp-controller="Home" method="post" class="login-form">
+        <div class="card-deck text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Candidato</h5>
+                    <p class="card-text">Estou procurando oportunidades</p>
+                    <button type="submit" name="TipoUsuario" value="C" class="botao">
+                        Selecionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Empresa</h5>
+                    <p class="card-text">Quero anunciar vagas</p>
+                    <button type="submit" name="TipoUsuario" value="E" class="botao">
+                        Selecionar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

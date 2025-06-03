@@ -1,0 +1,200 @@
+:root{
+   --fonte1: 'Satoshi', sans-serif; 
+   --fonte2: 'Inter', sans-serif;
+   --cor1: #2755F8;
+   --cor2: #131313;
+}
+
+* {
+  font-family: 'Satoshi', sans-serif;
+}
+
+body {
+  background-color: #f4f6f9;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid #ddd;
+}
+
+.site-header{
+    background-color: rgba(255, 255, 255, 0);
+    padding: 7px 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom:30px;
+}
+
+.icone-container{
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    width: auto;
+}
+
+.site-logo{
+    height: 45px;
+    width: auto;
+    margin-right: 3px;
+}
+
+.site-nome{
+    font-family: var(--fonte2);
+    font-size: 28px;
+    font-weight:700;
+    color: var(--cor1);
+    text-decoration: none;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 20px 50px;
+  border-radius: 30px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+h2 {
+  margin-top: 25px;
+  color: var(--cor2);
+  font-size: 1.2em;
+}
+
+.formulario label {
+  display: block;
+  margin: 10px 0 4px;
+  font-weight: 500;
+  color: var(--cor2);
+}
+
+.formulario input,
+.formulario textarea {
+  width: 100%;
+  max-width: 100%; /* Garante que não ultrapasse o container */
+  min-width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  transition: border 0.3s;
+  box-sizing: border-box; /* Essencial para respeitar padding do container */
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+  border-color: #2a7de1;
+  outline: none;
+  background-color: #fff;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+  padding: 14px;
+  background-color: var(--cor2);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--cor1);
+}
+
+.mensagem-sucesso {
+  background-color: #2755f89e;
+  color: white;
+  border: 1px solid #c3e6cb;
+  padding: 12px 20px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-family: 'santoshi', sans-serif;
+  display: none; /* Escondido por padrão */
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.mensagem-sucesso.mostrar {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.criar {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Card */
+.card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 25px;
+  width: 300px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #666;
+}
+
+.icone-perfil {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin: 10px;
+}
+
+.perfil-icon {
+  fill: var(--cor2);
+  transition: fill 0.3s ease;
+}
+
+.icone-perfil:hover .perfil-icon {
+  fill: var(--cor1); /* azul no hover */
+}
+
+a{
+    text-decoration: none;
+}
+

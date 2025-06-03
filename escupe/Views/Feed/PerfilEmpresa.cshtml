@@ -1,0 +1,78 @@
+﻿
+
+@model escupe.Models.Empresa
+@{
+    ViewData["Title"] = "Editar Perfil";
+  
+}
+
+<div class="container">
+    <h1>Editar Perfil</h1>
+    <form asp-action="PerfilEmpresa" method="post" class="formulario">
+        @Html.AntiForgeryToken()
+        <section>
+            <h2>Dados da Empresa</h2>
+            <label for="nome">Nome da empresa</label>
+            <input type="text" id="nome" name="NomeFantasia" value="@Model?.NomeFantasia" required />
+
+            <label for="cnpj">CNPJ da empresa:</label>
+            <input type="text" id="cnpj" name="CNPJ" value="@Model?.CNPJ" required maxlength="18" />
+
+            <label for="area_atuacao">Área de atuação:</label>
+            <select id="area_atuacao" name="AreaAtuacao" required>
+                <option value="">Selecione</option>
+                @foreach (var area in new[] {
+                    new { Valor = "administracao", Texto = "Administração" },
+                    new { Valor = "tecnologia", Texto = "Tecnologia da Informação" },
+                    new { Valor = "comercio", Texto = "Comércio / Varejo" },
+                    new { Valor = "educacao", Texto = "Educação" },
+                    new { Valor = "saude", Texto = "Saúde" },
+                    new { Valor = "industria", Texto = "Indústria" },
+                    new { Valor = "servicos", Texto = "Serviços Gerais" },
+                    new { Valor = "outros", Texto = "Outros" }
+                })
+                {
+                    var selected = Model?.AreaAtuacao == area.Valor ? "selected" : "";
+                    @:<option value="@area.Valor" @selected>@area.Texto</option>
+                }
+            </select>
+
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" name="Telefone" value="@Model?.Telefone" required />
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="Email" value="@Model?.Email" required />
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="Senha" value="@Model?.Senha" required />
+        </section>
+
+        <button type="submit">Salvar Alterações</button>
+
+        @if (ViewBag.MensagemSucesso != null)
+        {
+            <div class="mensagem-sucesso mostrar">
+                @ViewBag.MensagemSucesso
+            </div>
+        }
+    </form>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/editar.css" />
+}
+
+@section Scripts {
+    <script>
+        const formulario = document.querySelector('.formulario');
+        const mensagem = document.getElementById('mensagem-sucesso');
+
+        formulario.addEventListener('submit', function(event) {
+            event.preventDefault();
+            mensagem.classList.add('mostrar');
+            setTimeout(() => {
+                mensagem.classList.remove('mostrar');
+            }, 3000);
+        });
+    </script>
+}

@@ -1,0 +1,115 @@
+﻿@model escupe.ViewModels.CadastroEmpresaViewModel
+@{
+    var etapa = ViewBag.Etapa ?? 1;
+}
+
+@if (etapa == 1)
+{
+    <form asp-action="CadastrarEmpresa" method="post">
+        <input asp-for="TipoUsuario" type="hidden" />
+        <input type="hidden" name="etapa" value="1" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="Telefone"></label>
+            <input asp-for="Telefone" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="Senha"></label>
+            <input asp-for="Senha" class="form-control" type="password" />
+        </div>
+        <button type="submit">Próxima etapa</button>
+    </form>
+}
+else if (etapa == 2)
+{
+    <form asp-action="CadastrarEmpresa" method="post">
+        <input asp-for="TipoUsuario" type="hidden" />
+        <input type="hidden" name="etapa" value="2" />
+        <input type="hidden" asp-for="Email" />
+        <input type="hidden" asp-for="Telefone" />
+        <input type="hidden" asp-for="Senha" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div>
+            <label asp-for="NomeFantasia"></label>
+            <input asp-for="NomeFantasia" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="RazaoSocial"></label>
+            <input asp-for="RazaoSocial" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="CNPJ"></label>
+            <input asp-for="CNPJ" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="AreaAtuacao"></label>
+            <input asp-for="AreaAtuacao" class="form-control" />
+        </div>
+
+        <fieldset>
+            <legend>Endereço</legend>
+            <div>
+                <label asp-for="CEP"></label>
+                <input asp-for="CEP" class="form-control" id="cep" maxlength="8" onblur="buscarCep()" />
+            </div>
+            <div>
+                <label asp-for="Logradouro"></label>
+                <input asp-for="Logradouro" class="form-control" id="logradouro" readonly />
+            </div>
+            <div>
+                <label asp-for="Numero"></label>
+                <input asp-for="Numero" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Complemento"></label>
+                <input asp-for="Complemento" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Bairro"></label>
+                <input asp-for="Bairro" class="form-control" id="bairro" readonly />
+            </div>
+            <div>
+                <label asp-for="Cidade"></label>
+                <input asp-for="Cidade" class="form-control" id="cidade" readonly />
+            </div>
+            <div>
+                <label asp-for="UF"></label>
+                <input asp-for="UF" class="form-control" id="uf" readonly />
+            </div>
+        </fieldset>
+
+        <button type="submit">Finalizar cadastro</button>
+    </form>
+
+}
+
+<script>
+    function buscarCep() {
+        var cep = document.getElementById('cep').value.replace(/\D/g, '');
+        if (cep.length === 8) {
+            fetch('/api/cep/' + cep)
+                .then(response => {
+                    if (!response.ok) throw new Error('CEP não encontrado');
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('logradouro').value = data.logradouro || '';
+                    document.getElementById('bairro').value = data.bairro || '';
+                    document.getElementById('cidade').value = data.localidade || '';
+                    document.getElementById('uf').value = data.uf || '';
+                })
+                .catch(() => {
+                    document.getElementById('logradouro').value = '';
+                    document.getElementById('bairro').value = '';
+                    document.getElementById('cidade').value = '';
+                    document.getElementById('uf').value = '';
+                    alert('CEP inválido ou não encontrado.');
+                });
+        }
+    }
+</script>

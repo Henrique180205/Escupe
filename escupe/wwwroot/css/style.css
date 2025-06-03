@@ -1,0 +1,592 @@
+
+:root {
+    --fonte1: 'Satoshi', sans-serif;
+    --fonte2: 'Inter', sans-serif;
+    --cor1: #2755F8;
+    --cor2: #131313;
+}
+
+body {
+    margin: 0;
+    font-family: 'Satoshi', sans-serif;
+    position: relative;
+}
+
+p {
+    margin: 5px 15px;
+}
+
+#escultura-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 75vh;
+    width: 85vh;
+    height: auto;
+    z-index: -10;
+    pointer-events: none; /* para não atrapalhar os cliques */
+}
+
+.site-header {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 2vh 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.icone-container {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    width: auto;
+}
+
+.site-logo {
+    height: 9vh;
+    width: auto;
+    margin-right: 3px;
+}
+
+.site-nome {
+    font-family: var(--fonte2);
+    font-size: 5vh;
+    font-weight: 700;
+    color: var(--cor1);
+    text-decoration: none;
+}
+
+
+.botao,
+.botao:visited,
+.botao:hover,
+.botao:active,
+.botao:focus {
+    color: white !important;
+    text-decoration: none; /* opcional, para tirar underline */
+}
+
+
+.botao {
+    display: inline-block;
+    padding: 1.7vh 4vh;
+    background-color: var(--cor2);
+    color: white;
+    text-decoration: none;
+    border-radius: 22px;
+    font-family: var(--fonte2);
+    font-size: 2.8vh;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.botoes {
+    display: flex;
+    align-items: center;
+}
+
+#link-empresa {
+    font-size: 2.8vh;
+    padding: 1.7vh;
+    font-weight: bold;
+    color: var(--cor2);
+    text-decoration: none;
+}
+
+.login-container {
+    height: 85vh;
+    padding: 1.7vh 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    position: relative;
+}
+
+    .login-container h1 {
+        max-width: 860px;
+        text-align: left;
+        font-size: 30px;
+    }
+
+.login-form {
+    background: rgba(255, 255, 255, 0);
+    width: 85vw;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid #6E6E6E;
+    max-width: 480px;
+    width: 95%;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: medium;
+    font-family: var(--fonte1);
+}
+
+button {
+    margin: 20px auto;
+    background-color: var(--cor2);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--fonte2);
+}
+
+.login-form h2 {
+    padding: 10px;
+    margin: 0px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.login-form button h1 {
+    font-size: 20px;
+    margin: 0px 90px;
+}
+
+.divisor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px; /* espaço entre as linhas e o texto */
+    margin: auto;
+    padding: 0; /* opcional: espaço vertical */
+    width: 100%; /* ocupa toda a largura disponível */
+    max-width: 480px; /* limite para não ficar gigante */
+}
+
+.divisor-line {
+    flex-grow: 1;
+    height: 0.7px;
+    background-color: #6E6E6E;
+    max-width: 160px; /* cada linha no máximo 160px */
+}
+
+.divisor-texto {
+    font-family: var(--fonte1);
+    font-size: 16px;
+    color: #6E6E6E;
+    font-weight: 500;
+    white-space: nowrap; /* impede quebra do "ou" */
+}
+
+#primeira-vez {
+    margin: auto;
+}
+
+#crie-conta {
+    font-weight: bold;
+    color: var(--cor2);
+}
+
+#login-empresa {
+    color: var(--cor1);
+    font-weight: bold;
+    margin: auto;
+}
+
+.svg-inferior {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 300px; /* controla o tamanho */
+    max-width: 40%;
+    z-index: -1; /* 🔥 fica no fundo da section */
+}
+
+    .svg-inferior img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+.section-candidatos {
+    background-color: var(--cor1);
+    box-shadow: inset 0 4px 10px rgba(0,0,0,0.2), inset 0 -4px 10px rgba(0,0,0,0.2);
+}
+
+#h1-candidatos {
+    color: white;
+    margin: auto;
+}
+
+
+.para-candidatos {
+    position: relative;
+    padding: 30px 20px;
+}
+
+.textos-superiores {
+    text-align: center;
+    margin: 0px;
+    padding: 30px;
+    color: white; /* ou outra cor que combine com o fundo azul */
+    padding-bottom: 0px;
+}
+
+h1 {
+    font-family: var(--fonte1);
+    font-size: 40px;
+    margin: 0px;
+    padding: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.textos-superiores p {
+    font-family: var(--fonte1);
+    font-size: 15px;
+    max-width: 965px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+
+.circles-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 20px;
+    flex-wrap: wrap;
+}
+
+.circle-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    background-color: white;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .circle img {
+        width: 70%;
+        height: 70%;
+        object-fit: contain; /* adapta a imagem dentro do círculo */
+    }
+
+.circle-item h3 {
+    font-size: 20px;
+    margin: 2px 0;
+    text-decoration: underline;
+    color: white;
+    max-width: 260px;
+}
+
+.circle-item p {
+    font-size: 16px;
+    margin: 0;
+    color: white;
+    max-width: 270px;
+}
+
+footer {
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    font-size: 0.85em;
+}
+
+.para-empresa {
+    position: relative;
+    padding: 30px 20px;
+    background-color: white;
+    box-shadow: inset 0 4px 10px rgba(0,0,0,0.2), inset 0 -4px 10px rgba(0, 0, 0, 0.082);
+}
+
+    .para-empresa p {
+        text-align: center;
+        font-family: var(--fonte1);
+        font-size: 16px;
+        max-width: 965px;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+
+
+/* Estilo geral das etapas */
+.step {
+    display: none;
+    width: 80%;
+    max-width: 1000px;
+    margin: auto;
+    margin-bottom: 50px;
+    margin-top: 10px;
+    padding: 30px;
+    background-color: white;
+    border: solid rgba(222, 222, 222, 0.402);
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+    /* Torna visível apenas a etapa ativa */
+    .step.active {
+        display: block;
+    }
+
+#educacao_cursando,
+#educacao_concluida {
+    width: 80%;
+    max-width: 1000px;
+    margin: auto;
+    margin-bottom: 50px;
+    margin-top: 10px;
+    padding: 30px;
+    background-color: white;
+    border: solid rgba(222, 222, 222, 0.402);
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.escondido {
+    display: none;
+}
+
+textarea {
+    font-family: var(--fonte1);
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #6E6E6E;
+    border-radius: 10px;
+    resize: vertical;
+}
+
+
+/* Estilo dos inputs e botões */
+.step input, .step button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.step label {
+    display: block; /* NOVO: Garante que o label fique em linha separada */
+    margin-top: 10px; /* NOVO: Espaço acima do label */
+    font-weight: 500; /* NOVO: Deixa a instrução mais visível */
+}
+
+.step.active button {
+    margin: 15px auto;
+    max-width: 250px;
+    height: 45px;
+    font-family: var(--fonte1);
+    font-size: 20px;
+}
+
+.step .inputs-container {
+    display: grid; /* Usar grid para controlar as colunas */
+    grid-template-columns: repeat(2, 1fr); /* Duas colunas de tamanhos iguais */
+    gap: 10px 50px; /* Espaçamento entre os inputs */
+    padding: 20px;
+    margin: auto;
+}
+
+.step.active h2 {
+    margin: auto;
+    margin-left: 20px;
+}
+
+#h1-cadastro {
+    margin: 6vh;
+    margin-top: 0;
+    margin-bottom: 0px;
+    text-align: left;
+    max-width: 686px;
+}
+
+#p-cadastro {
+    font-weight: 400;
+    margin: 7vh;
+    margin-top: 10px;
+    max-width: 750px;
+    text-align: left;
+}
+
+#escolaridade, #situacao_educacional {
+    font-family: var(--fonte1);
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column; /* muda o layout para coluna */
+        align-items: center; /* centraliza tudo */
+    }
+
+    .icone-container {
+        justify-content: center; /* centraliza logo + nome */
+    }
+
+    .botoes {
+        flex-direction: column; /* empilha os botões/links */
+        align-items: center;
+    }
+
+    .botao, #link-empresa {
+        width: 100%; /* botões ocupam toda a largura */
+        text-align: center;
+    }
+
+    #escultura-img {
+        display: none;
+    }
+
+    .svg-inferior {
+        display: none;
+    }
+
+    .divisor {
+        max-width: 100%;
+        padding: 10px 0;
+    }
+
+    .divisor-line {
+        max-width: 80px; /* linhas mais curtinhas no celular */
+    }
+
+    .circles-container {
+        flex-direction: column;
+        margin: 40px 20px;
+        gap: 40px;
+    }
+
+    .step {
+        padding: 15px;
+        margin: 10vw;
+        width: 75%;
+    }
+
+        .step input, .step button {
+            font-size: 16px;
+        }
+
+
+        .step .inputs-container {
+            display: block;
+            gap: 15px;
+        }
+
+    .vagas-container {
+        display: flex;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        gap: 40px;
+        font-family: var(--fonte1);
+    }
+
+    .vaga-destaque {
+        flex: 3;
+        background: #fff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    }
+
+        .vaga-destaque h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--cor2);
+        }
+
+        .vaga-destaque .empresa,
+        .vaga-destaque .local,
+        .vaga-destaque .salario,
+        .vaga-destaque .requisitos,
+        .vaga-destaque .descricao {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+    .outras-vagas {
+        flex: 1;
+        background-color: #f7f7f7;
+        padding: 20px;
+        border-radius: 20px;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
+        .outras-vagas h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--cor2);
+        }
+
+    .card-vaga {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+        .card-vaga:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-vaga h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--cor1);
+        }
+
+        .card-vaga p {
+            font-size: 14px;
+            color: #555;
+        }
+
+    @media (max-width: 768px) {
+        .vagas-container {
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        .outras-vagas {
+            margin-top: 30px;
+        }
+    }
+    .vertical-container {
+        display: flex;
+        flex-direction: column; /* Alinha os itens verticalmente */
+        align-items: center; /* Centraliza os itens horizontalmente */
+        gap: 20px; /* Espaçamento entre os itens */
+        width: 100%; /* Ocupa toda a largura */
+        margin: 0 auto; /* Centraliza o contêiner */
+        padding: 20px;
+        box-sizing: border-box;
+    }
+}
