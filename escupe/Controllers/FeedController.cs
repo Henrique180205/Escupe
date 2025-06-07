@@ -118,11 +118,16 @@ public class FeedController : Controller
         return View();
     }
 
-    [HttpGet]
+    
 
-    public IActionResult FeedVaga()
+    [HttpGet]
+    public IActionResult FeedVaga(string cargo, string localizacao)
     {
         var vagas = _context.Vagas
+            .Where(v =>
+                (string.IsNullOrEmpty(cargo) || v.Titulo.Contains(cargo) || v.Empresa.AreaAtuacao.Contains(cargo)) &&
+                (string.IsNullOrEmpty(localizacao) || v.Localizacao.Contains(localizacao))
+            )
             .Select(v => new VagaViewModel
             {
                 Id = v.Id,
@@ -131,7 +136,9 @@ public class FeedController : Controller
                 Localizacao = v.Localizacao,
                 Salario = v.Salario,
                 Beneficios = v.Beneficios,
-                DataPublicacao = v.DataPublicacao
+                DataPublicacao = v.DataPublicacao,
+                Setor = v.Empresa.AreaAtuacao,
+                NomeFantasia = v.Empresa.NomeFantasia
             })
             .ToList();
 
@@ -142,6 +149,5 @@ public class FeedController : Controller
 
         return View(model);
     }
-
 
 }

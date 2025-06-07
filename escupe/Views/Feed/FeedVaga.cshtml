@@ -1,29 +1,30 @@
 ﻿@model escupe.ViewModels.FeedVagaViewModel
-<link rel="stylesheet" href="~/css/style.css" />
-<link rel="stylesheet" href="~/css/vagas.css" />
-
+@{
+    var cargo = Context.Request.Query["cargo"].ToString();
+    var localizacao = Context.Request.Query["localizacao"].ToString();
+    Layout = null; // ou seu layout, se houver
+}
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
     <title>Esculp - Vagas</title>
-    <link rel="icon" href="@Url.Content("~/imagens/favicon.ico")" type="image/x-icon">
-    <link rel="stylesheet" href="@Url.Content("~/css/vagas.css")">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="~/imagens/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/vagas.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <!-- Conteúdo da página -->
+
     <header class="site-header">
-        <a href="@Url.Action("ProcurarVagas", "Feed")" class="icone-container">
-            <img src="@Url.Content("~/imagens/icone.png")" alt="Logo do Site" class="site-logo">
+        <a href="@Url.Action("Index", "Vaga")" class="icone-container">
+            <img src="~/imagens/icone.png" alt="Logo do Site" class="site-logo" />
             <span class="site-nome">Esculp</span>
         </a>
-
-        <a href="@Url.Action("EditarEstudante", "Perfil")" class="icone-perfil" title="Perfil">
+        <a href="@Url.Action("PerfilCandidato", "Feed")" class="icone-perfil" title="Perfil">
             <svg xmlns="http://www.w3.org/2000/svg" class="perfil-icon" viewBox="0 0 24 24" width="28" height="28">
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4
         1.79-4 4 1.79 4 4 4zm0 2c-2.67
@@ -31,97 +32,357 @@
             </svg>
         </a>
     </header>
+    <form method="get" action="@Url.Action("FeedVaga", "Feed")" class="search-bar">
+        <input type="text" name="cargo" placeholder="Procure por cargo, vaga ou setor" value="@cargo" />
+        <input type="text" name="localizacao" placeholder="Cidade, estado ou 'remoto'" value="@localizacao" />
+        <button type="submit">Buscar</button>
+    </form>
 
-    <div class="search-bar">
-        <input id="vaga" type="text" placeholder="Procure por cargo, vaga ou setor">
-        <input id="localizacao" type="text" placeholder="Cidade, estado ou 'remoto'">
-    </div>
-
-  <div class="vagas-lista">
-    @for (int i = 0; i < Model.Vagas.Count; i++)
-    {
-        var vaga = Model.Vagas[i];
-        <div class="vaga-row" id="vaga-row-@i">
-<div class="card-vaga" onclick="mostrarDetalhes(@i)">
-                <h3>@vaga.Titulo</h3>
-                <span>@vaga.EmpresaId</span>
+    <main>
+        @for (int i = 0; i < Model.Vagas.Count; i++)
+        {
+            var vaga = Model.Vagas[i];
+            <div class="card" onclick="mostrarDetalhes(@i)">
+                <div class="card-top">
+                    <h3>@vaga.Titulo</h3>
+                    <span>@vaga.NomeFantasia</span>
+                </div>
+                <div class="tags">
+                    <div class="tag">@vaga.Localizacao</div>
+                    <div class="tag">@vaga.Setor</div>
+                    <div class="tag">@vaga.DataPublicacao.ToString("MMMM yyyy")</div>
+                </div>
                 <p>@vaga.Descricao</p>
+                <div class="card-footer">
+                    <span>Postado @vaga.DataPublicacao dias atrás</span>
+                    <span class="salario">R$ @vaga.Salario.ToString("N2")</span>
+                </div>
+                <div class="vaga-detalhes" id="detalhes-@i" style="display:none"></div>
             </div>
-            <div class="vaga-detalhes" id="detalhes-vaga-@i" style="display:none;">
-                <!-- O conteúdo será preenchido via JS -->
+        }
+
+        <div>
+            <p class="placeholder">Clique em uma vaga para ver os detalhes</p>
+        </div>
+
+        <div id="formModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModalBtn">&times;</span>
+                <h2>Informações do Candidato</h2>
+                <form>
+                    <label>Email:</label>
+                    <input type="email" required />
+                    <label>Telefone:</label>
+                    <input type="tel" required />
+                    <label>Currículo (PDF):</label>
+                    <input type="file" accept=".pdf" required />
+                    <label>Breve descrição sobre você:</label>
+                    <textarea rows="5" required></textarea>
+                    <button type="submit" class="submit-btn">Enviar</button>
+                </form>
             </div>
         </div>
-    }
-</div>
+    </main>
+
+    <!-- Painel flutuante de detalhes da vaga -->
+    <div id="painelDetalhes" class="painel-detalhes-flutuante" style="display:none"></div>
 
     <footer>
         <p><strong>Contato:</strong> EmpresaEsculp@gmail.com</p>
         <p><strong>Busque por:</strong> Empresas, Vagas, Oportunidade</p>
-        <strong>Copyright © 2025. Esculp LLC. “Esculp” o logotipo do Esculp são marcas comerciais pertencentes à Esculp LLC.</strong>
-    </footer>script src="@Url.Content("~/js/vagas.js")"></script>
+        <strong>Copyright © 2025. Esculp LLC. “Esculp” e seu logotipo são marcas registradas.</strong>
+    </footer>
+
+    <script>
+        // Array de detalhes das vagas no formato HTML
+        const detalhesVagas = [
+        @for (int i = 0; i < Model.Vagas.Count; i++)
+        {
+            var vaga = Model.Vagas[i];
+            <text>
+                `<div class="btn-detalhes">
+                            <button class="btn-apply" onclick="abrirModal(event)">Candidatar-se</button>
+                        </div>
+                        <section class="details">
+                            <h4>📄 Descrição da vaga</h4>
+                            <p>@vaga.Descricao</p>
+                        </section>
+                        <section class="details">
+                            <h4>🧭 Localização</h4>
+                            <p>@vaga.Localizacao</p>
+                        </section>
+                        <section class="details">
+                            <h4>💰 Salário</h4>
+                            <p>@vaga.Salario.ToString("C")</p>
+                        </section>
+                        <section class="details">
+                            <h4>🎁 Benefícios</h4>
+                            <p>@vaga.Beneficios</p>
+                        </section>
+                        <section class="details">
+                            <h4>📅 Publicação</h4>
+                            <p>@vaga.DataPublicacao.ToString("dd/MM/yyyy")</p>
+                        </section>`
+                @(i < Model.Vagas.Count - 1 ? "," : "")
+            </text>
+        }
+                ];
+
+        // Mostra o painel de detalhes fixo na lateral
+        function mostrarDetalhes(index) {
+            let painel = document.getElementById('painelDetalhes');
+            if (!painel) {
+                painel = document.createElement('div');
+                painel.id = 'painelDetalhes';
+                painel.className = 'painel-detalhes-flutuante';
+                document.body.appendChild(painel);
+            }
+            painel.innerHTML = detalhesVagas[index];
+            painel.style.display = 'block';
+        }
+
+        // Abre o modal de candidatura
+        function abrirModal(event) {
+            event.stopPropagation();
+            document.getElementById("formModal").style.display = "block";
+        }
+
+        // Fecha o painel de detalhes ao clicar fora dele
+        document.addEventListener('click', function (e) {
+            const painel = document.getElementById('painelDetalhes');
+            if (painel && painel.style.display === 'block' && !painel.contains(e.target) && !e.target.classList.contains('card')) {
+                painel.style.display = 'none';
+            }
+        });
+
+        // Modal de candidatura
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.getElementById("formModal");
+            const close = document.getElementById("closeModalBtn");
+            const form = document.querySelector(".modal-content form");
+
+            close.addEventListener("click", () => modal.style.display = "none");
+            window.addEventListener("click", e => {
+                if (e.target === modal) modal.style.display = "none";
+            });
+
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+                const msg = document.createElement("div");
+                msg.className = "confirmation";
+                msg.textContent = "✔ Formulário enviado com sucesso!";
+                form.appendChild(msg);
+                form.reset();
+                setTimeout(() => {
+                    modal.style.display = "none";
+                    msg.remove();
+                }, 3000);
+            });
+        });
+    </script>
+  
+
+    <style>
+    /* Insira aqui seu CSS moderno ou importe de um arquivo externo */
+        <style >
+        /* Insira aqui seu CSS moderno ou importe de um arquivo externo */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .card {
+            width: auto;
+            height: auto;
+            left: 0px;
+            top: 0px;
+            border-radius: 25px;
+            background: #1547F9;
+        }
+
+            .card:hover {
+                transform: translateY(-2px);
+            }
+
+            .card h3 {
+                margin: 0;
+                font-size: 1em;
+                font-weight: bold
+            }
+
+        .card-top {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            margin: 17px;
+            margin-bottom: 15px;
+            color: white;
+            gap: 10px;
+        }
+
+        .card span {
+            margin: 0;
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .card p {
+            font-size: 0.8em;
+            line-height: 1.4em;
+            margin: 17px;
+            margin-top: 15px;
+            color: white;
+            width: 420px;
+            right: 40px;
+            max-width: 385px;
+            max-height: 43px;
+        }
+
+        .tags {
+            padding-left: 15px;
+            margin: 0px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background-color: rgba(255, 255, 255, 0.24);
+            padding: 6px 12px;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+        }
+
+        .card-footer {
+            background-color: white;
+            color: #000;
+            border-radius: 0 0 25px 25px;
+            padding: 18px 17px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            border: 2px solid #1547F9;
+        }
+
+            .card-footer span {
+                font-size: 0.9em;
+            }
+
+        .salario {
+            font-weight: bold;
+            color: #111;
+            font-family: "satoshi";
+        }
+
+        .vaga-detalhes {
+            background: #fff;
+            padding: 20px;
+        }
+
+        .btn-candidatar, .btn-salvar {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-candidatar {
+            background: #007bff;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .btn-salvar {
+            background: #333;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+            .modal-content input,
+            .modal-content textarea {
+                width: 100%;
+                margin: 8px 0;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+        .submit-btn {
+            background: black;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .confirmation {
+            margin-top: 12px;
+            background: #2b74f8;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+    .painel-detalhes-flutuante {
+            position: fixed;
+            top: 80px;
+            right: 0;
+            width: 420px;
+            max-width: 90vw;
+            height: calc(100vh - 100px);
+            background: #fff;
+            box-shadow: -2px 0 16px rgba(0,0,0,0.12);
+            border-radius: 16px 0 0 16px;
+            z-index: 100;
+            padding: 32px 28px 28px 28px;
+            overflow-y: auto;
+            display: none;
+            animation: painelDetalhesFadeIn 0.2s;
+        }
+        keyframes painelDetalhesFadeIn {
+            from { opacity: 0; right: -40px; }
+            to { opacity: 1; right: 0; }
+        }
+    </style>
 </body>
 </html>
-
-
-<script>
-    const vagas = [
-    @for (int i = 0; i < Model.Vagas.Count; i++)
-    {
-        var vaga = Model.Vagas[i];
-        <text>
-            {
-                titulo: "@vaga.Titulo",
-                empresa: "@vaga.EmpresaId",
-                descricao: `
-                            <div class="btn-detalhes">
-                                <button class="btn-apply">Candidatar-se</button>
-                            </div>
-                            <section class="details">
-                                <h4>📄 Descrição da vaga</h4>
-                                <p>@vaga.Descricao</p>
-                            </section>
-                            <section class="details">
-                                <h4>🧭 Localização</h4>
-                                <p>@vaga.Localizacao</p>
-                            </section>
-                            <section class="details">
-                                <h4>💰 Salário</h4>
-                                <p>@vaga.Salario.ToString("C")</p>
-                            </section>
-                            <section class="details">
-                                <h4>🎁 Benefícios</h4>
-                                <p>@vaga.Beneficios</p>
-                            </section>
-                            <section class="details">
-                                <h4>📅 Publicação</h4>
-                                <p>@vaga.DataPublicacao.ToString("dd/MM/yyyy")</p>
-                            </section>
-                        `
-            }@(i < Model.Vagas.Count - 1 ? "," : "")
-        </text>
-    }
-        ];
-
-    function mostrarDetalhes(index) {
-        const container = document.getElementById("detalhes-vaga");
-        container.innerHTML = vagas[index].descricao;
-    }
-</script>
-
-<script>
-    const detalhesVagas = [
-    @for (int i = 0; i < (Model.Vagas?.Count ?? 0); i++)
-    {
-        var vaga = Model.Vagas[i];
-        @Html.Raw(
-                 "@\"<h2>" + vaga.Titulo + "</h2>" +
-                 "<h4>" + vaga.EmpresaId + "</h4>" +
-                 "<p>" + vaga.Descricao + "</p>" +
-                 "<p><strong>Localização:</strong> " + vaga.Localizacao + "</p>" +
-                 "<p><strong>Salário:</strong> " + vaga.Salario.ToString("C") + "</p>" +
-                 "<button class='btn-apply'>Candidatar-se</button>\"" +
-                 (i < Model.Vagas.Count - 1 ? "," : "")
-                 )
-    }
-        ];
-</script>

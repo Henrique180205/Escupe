@@ -9,6 +9,8 @@ namespace escupe.ViewModels
         public string? Localizacao { get; set; }
         public decimal Salario { get; set; }
         public string Beneficios { get; set; }
+        public string NomeFantasia { get; set; }
+
         public string Setor { get; set; }
         public DateTime DataPublicacao { get; set; }
         public int EmpresaId { get; set; }

@@ -1,6 +1,7 @@
 ﻿@model escupe.Models.LoginModel
 @{
     ViewData["Title"] = "Login";
+    Layout = null;
 }
 <h2>Login</h2>
 
@@ -29,8 +30,7 @@
             <img src="~/imagens/icone.png" alt="Logo do Site" class="site-logo" />
             <span class="site-nome">Esculp</span>
         </a>
-
-       
+    </header>
 
     <main class="vertical-container">
         <section class="login-container">
@@ -43,81 +43,81 @@
                 <h2>Insira a senha</h2>
                 <input asp-for="Senha" type="password" placeholder="Insira sua senha" required />
                 <span asp-validation-for="Senha" class="text-danger"></span>
-                    <button type="submit" class="btn-entrar">
-                        Entrar
-                    </button>
+                <button type="submit" class="btn-entrar">
+                    Entrar
+                </button>
                 <div class="divisor">
                     <div class="divisor-line"></div>
                     <div class="divisor-texto">ou</div>
                     <div class="divisor-line"></div>
                 </div>
-                    <h2 id="primeira-vez">
-                        Primeira vez aqui? <a asp-controller="Home" asp-action="EscolhaTipo" id="crie-conta-link">Crie a sua conta</a>
-                    </h2>
+                <h2 id="primeira-vez">
+                    Primeira vez aqui? <a asp-controller="Home" asp-action="EscolhaTipo" id="crie-conta-link">Crie a sua conta</a>
+                </h2>
             </form>
-                
-     </main>
-        </section>
 
-            <div class="svg-inferior">
-                <img src="~/imagens/svg-inferior.svg" alt="decoração inferior esquerda" />
-            </div>
-        
+    </main>
+    </section>
 
-        <section class="section-candidatos">
-            <div class="textos-superiores">
-                <h1 class="titulos">Oportunidade para quem quer começar!</h1>
-                <p>
-                    Aqui damos voz e vez a quem ainda não teve chance de mostrar seu potencial. Acreditamos que nenhuma
-                    experiência é pequena demais e que todo mundo merece uma primeira oportunidade.
-                </p>
-            </div>
+    <div class="svg-inferior">
+        <img src="~/imagens/svg-inferior.svg" alt="decoração inferior esquerda" />
+    </div>
 
-            <div class="para-candidatos">
-                <div class="circles-container">
-                    <div class="circle-item">
-                        <div class="circle">
-                            <img src="~/imagens/bandeira.png" alt="imagem de uma bandeira de corrida" />
-                        </div>
-                        <h3>Para quem está começando</h3>
-                        <p>Ideal para quem não tem experiência profissional ou acadêmica</p>
+
+    <section class="section-candidatos">
+        <div class="textos-superiores">
+            <h1 class="titulos">Oportunidade para quem quer começar!</h1>
+            <p>
+                Aqui damos voz e vez a quem ainda não teve chance de mostrar seu potencial. Acreditamos que nenhuma
+                experiência é pequena demais e que todo mundo merece uma primeira oportunidade.
+            </p>
+        </div>
+
+        <div class="para-candidatos">
+            <div class="circles-container">
+                <div class="circle-item">
+                    <div class="circle">
+                        <img src="~/imagens/bandeira.png" alt="imagem de uma bandeira de corrida" />
                     </div>
+                    <h3>Para quem está começando</h3>
+                    <p>Ideal para quem não tem experiência profissional ou acadêmica</p>
+                </div>
 
-                    <div class="vertical-container">
-                        <div class="circle">
-                            <img src="~/imagens/maleta.png" alt="imagem de uma maleta" />
-                        </div>
-                        <h3>Oportunidades reais</h3>
-                        <p>Empresas dispostas a ensinar, treinar e formar novos talentos</p>
+                <div class="circle-item">
+                    <div class="circle">
+                        <img src="~/imagens/maleta.png" alt="imagem de uma maleta" />
                     </div>
+                    <h3>Oportunidades reais</h3>
+                    <p>Empresas dispostas a ensinar, treinar e formar novos talentos</p>
+                </div>
 
-                    <div class="circle-item">
-                        <div class="circle">
-                            <img src="~/imagens/prancheta.png" alt="imagem de uma prancheta" />
-                        </div>
-                        <h3>Cadastro fácil e gratuito</h3>
-                        <p>Crie seu perfil em minutos e comece a se candidatar</p>
+                <div class="circle-item">
+                    <div class="circle">
+                        <img src="~/imagens/prancheta.png" alt="imagem de uma prancheta" />
                     </div>
+                    <h3>Cadastro fácil e gratuito</h3>
+                    <p>Crie seu perfil em minutos e comece a se candidatar</p>
+                </div>
 
-                    <div class="circle-item">
-                        <div class="circle">
-                            <img src="~/imagens/seta.png" alt="imagem de uma seta" />
-                        </div>
-                        <h3>Inclusão e crescimento</h3>
-                        <p>Seu esforço e vontade de aprender são o que mais importa aqui</p>
+                <div class="circle-item">
+                    <div class="circle">
+                        <img src="~/imagens/seta.png" alt="imagem de uma seta" />
                     </div>
+                    <h3>Inclusão e crescimento</h3>
+                    <p>Seu esforço e vontade de aprender são o que mais importa aqui</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="para-empresa">
-            <h1 class="titulos">Oportunidade para se apresentar a sua empresa!</h1>
-            <div class="underline"></div>
-            <p>
-                Os candidatos estão visitando a página da sua empresa no Esculp. Controle a narrativa e mostre a eles por
-                que eles devem fazer parte de sua equipe.
-            </p>
-        </section>
+    <section class="para-empresa">
+        <h1 class="titulos">Oportunidade para se apresentar a sua empresa!</h1>
+        <div class="underline"></div>
+        <p>
+            Os candidatos estão visitando a página da sua empresa no Esculp. Controle a narrativa e mostre a eles por
+            que eles devem fazer parte de sua equipe.
+        </p>
+    </section>
     </main>
 
     <footer>
@@ -137,6 +137,16 @@
         </div>
     </div>
 
+    <style>
+        button {
+            min-width: 250px;
+            min-height: 35px;
+        }
+    </style>
+
     <script src="~/js/scriptfront.js"></script>
 </body>
 </html>
+
+
+   
