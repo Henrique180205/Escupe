@@ -90,13 +90,13 @@
                 </div>
                 <div>
                     <label for="Logradouro">Rua:</label>
-                    <input type="text" id="Logradouro" name="Logradouro" value="@Model.Logradouro" required readonly />
+                    <input type="text" id="Logradouro" name="Logradouro" value="@Model.Logradouro" required readonly tabindex="-1" />
 
                     @Html.ValidationMessageFor(m => m.Logradouro, "", new { @class = "text-danger" })
                 </div>
                 <div>
                     <label for="Bairro">Bairro:</label>
-                    <input type="text" id="Bairro" name="Bairro" value="@Model.Bairro" required readonly />
+                    <input type="text" id="Bairro" name="Bairro" value="@Model.Bairro" required readonly tabindex="-1" />
                     @Html.ValidationMessageFor(m => m.Bairro, "", new { @class = "text-danger" })
                 </div>
                 <div>
@@ -105,13 +105,18 @@
                     @Html.ValidationMessageFor(m => m.Numero, "", new { @class = "text-danger" })
                 </div>
                 <div>
+                    <label for="Complemento">Complemento:</label>
+                    <input type="text" id="Complemento" name="Complemento" value="@Model.Complemento" />
+                    @Html.ValidationMessageFor(m => m.Complemento, "", new { @class = "text-danger" })
+                </div>
+                <div>
                     <label for="Cidade">Cidade:</label>
-                    <input type="text" id="Cidade" name="Cidade" value="@Model.Cidade" required readonly />
+                    <input type="text" id="Cidade" name="Cidade" value="@Model.Cidade" required readonly tabindex="-1" />
                     @Html.ValidationMessageFor(m => m.Cidade, "", new { @class = "text-danger" })
                 </div>
                 <div>
                     <label for="UF">Estado:</label>
-                    <input type="text" id="UF" name="UF" value="@Model.UF" required readonly />
+                    <input type="text" id="UF" name="UF" value="@Model.UF" required readonly tabindex="-1" />
                     @Html.ValidationMessageFor(m => m.UF, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -152,6 +157,11 @@
         $('#CEP').mask('00000-000');
         $('#CPF').mask('000.000.000-00');
         $('#Telefone').mask('(00) 00000-0000');
+    });
+
+    // Se usar AJAX ou troca dinâmica de etapa, re-aplique a máscara:
+    $(document).on('focus', '#CPF', function () {
+        $(this).mask('000.000.000-00');
     });
 </script>
 

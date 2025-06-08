@@ -3,6 +3,7 @@ using escupe.Data;
 using escupe.Models;
 using System.Linq;
 using escupe.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 public class FeedController : Controller
 {
@@ -11,6 +12,24 @@ public class FeedController : Controller
     public FeedController(ApplicationDbContext context)
     {
         _context = context;
+    }
+
+
+    [HttpGet]
+    public IActionResult PerfilCandidato()
+    {
+        var candidatoId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (candidatoId == null)
+            return RedirectToAction("Login", "Home");
+
+        // Inclui o endereço relacionado
+        var candidato = _context.Candidato
+            .Include(c => c.Endereco)
+            .FirstOrDefault(c => c.Id == int.Parse(candidatoId));
+        if (candidato == null)
+            return NotFound();
+
+        return View(candidato);
     }
 
     [HttpGet]

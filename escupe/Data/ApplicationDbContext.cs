@@ -32,6 +32,7 @@ public class ApplicationDbContext : DbContext
         //     .HasOne(u => u.Empresa)
         //     .WithOne(e => e.Usuario)
         //     .HasForeignKey<Empresa>(e => e.UsuarioId);
+      
 
         // Relacionamento opcional entre Candidato e Endereco
         modelBuilder.Entity<Candidato>()

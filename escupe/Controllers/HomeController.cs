@@ -46,7 +46,6 @@ public class HomeController : Controller
 
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel model)
-
     {
         if (!ModelState.IsValid)
         {
@@ -63,6 +62,7 @@ public class HomeController : Controller
                 return View("Index", model);
             }
 
+            // Correção: Defina a lista de claims antes de usá-la
             List<Claim> claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, model.Email),
@@ -71,13 +71,24 @@ public class HomeController : Controller
 
             if (usuarioAutenticado.TipoUsuario == "C")
             {
-                var candidato = (Candidato)usuarioAutenticado.Usuario;
+                var candidato = usuarioAutenticado.Usuario as Candidato;
+                // Correção: int não pode ser null, então só verifica se é null o objeto
+                if (candidato == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Dados do candidato incompletos.");
+                    return View("Index", model);
+                }
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, candidato.Id.ToString()));
                 claims.Add(new Claim(ClaimTypes.Role, "Candidato"));
             }
             else if (usuarioAutenticado.TipoUsuario == "E")
             {
-                var empresa = (Empresa)usuarioAutenticado.Usuario;
+                var empresa = usuarioAutenticado.Usuario as Empresa;
+                if (empresa == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Dados da empresa incompletos.");
+                    return View("Index", model);
+                }
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, empresa.Id.ToString()));
                 claims.Add(new Claim(ClaimTypes.Role, "Empresa"));
             }
@@ -99,13 +110,13 @@ public class HomeController : Controller
             {
                 var feedVagaViewModel = new FeedVagaViewModel();
                 // Carregue as vagas conforme sua lógica de negócio
-                return View("~/Views/Feed/FeedProcuraVaga.cshtml", feedVagaViewModel);
+                return RedirectToAction("FeedProcuraVaga", "Feed");
             }
             else // Empresa
             {
                 var homeEmpresaViewModel = new HomeEmpresaViewModel();
                 // Carregue os dados da empresa conforme sua lógica de negócio
-                return View("~/Views/Feed/HomeEmpresa.cshtml", homeEmpresaViewModel);
+                return RedirectToAction("HomeEmpresa", "Feed");
             }
         }
         catch (Exception ex)
@@ -115,7 +126,6 @@ public class HomeController : Controller
             return RedirectToAction("Erro");
         }
     }
-
     public IActionResult Erro()
     {
         return View();

@@ -61,8 +61,8 @@
             </div>
         }
 
-        <div>
-            <p class="placeholder">Clique em uma vaga para ver os detalhes</p>
+        <div id="painelDetalhes" class="painel-detalhes-flutuante">
+            <p class="placeholder" id="placeholderMsg">Clique em uma vaga para ver os detalhes</p>
         </div>
 
         <div id="formModal" class="modal">
@@ -128,18 +128,21 @@
         }
                 ];
 
-        // Mostra o painel de detalhes fixo na lateral
+
         function mostrarDetalhes(index) {
             let painel = document.getElementById('painelDetalhes');
-            if (!painel) {
-                painel = document.createElement('div');
-                painel.id = 'painelDetalhes';
-                painel.className = 'painel-detalhes-flutuante';
-                document.body.appendChild(painel);
-            }
+            let placeholder = document.getElementById('placeholderMsg');
+            if (placeholder) placeholder.style.display = 'none';
             painel.innerHTML = detalhesVagas[index];
             painel.style.display = 'block';
         }
+
+        // Exibe a mensagem ao carregar a página
+        document.addEventListener("DOMContentLoaded", function () {
+            let painel = document.getElementById('painelDetalhes');
+            painel.style.display = 'block';
+            painel.innerHTML = '<p class="placeholder" id="placeholderMsg">Clique em uma vaga para ver os detalhes</p>';
+        });
 
         // Abre o modal de candidatura
         function abrirModal(event) {
@@ -370,13 +373,15 @@
             color: #666;
         }
 
-    .painel-detalhes-flutuante {
+        .painel-detalhes-flutuante {
             position: fixed;
-            top: 80px;
-            right: 0;
-            width: 420px;
-            max-width: 90vw;
-            height: calc(100vh - 100px);
+            top: 60px; /* mais próximo do topo */
+            right: 40px; /* mais próximo dos cards, diminua se quiser mais perto */
+            width: 520px; /* mais largo */
+            max-width: 95vw;
+            min-width: 380px;
+            height: auto;
+            max-height: calc(100vh - 80px);
             background: #fff;
             box-shadow: -2px 0 16px rgba(0,0,0,0.12);
             border-radius: 16px 0 0 16px;
