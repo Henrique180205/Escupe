@@ -192,10 +192,17 @@
             padding: 0;
         }
 
-
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Alinha os cards à esquerda */
+            gap: 24px; /* Espaço entre os cards */
+            margin-left: 40px; /* Opcional: afasta da borda esquerda */
+        }
         .card {
-            width: auto;
+            width: 360px;
             height: auto;
+            margin: 0;
             left: 0px;
             top: 0px;
             border-radius: 25px;

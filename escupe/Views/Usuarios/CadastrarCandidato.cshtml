@@ -1,6 +1,7 @@
 ﻿@model escupe.ViewModels.CadastroCandidatoViewModel
 @{
     ViewData["Title"] = "Cadastrar Candidato";
+    var etapa = ViewBag.Etapa ?? 1;
 }
 
 <!DOCTYPE html>
@@ -23,78 +24,145 @@
     <h1 id="h1-cadastro">Seu primeiro emprego está a um clique de distância</h1>
     <p id="p-cadastro">Cadastre-se gratuitamente e descubra oportunidades feitas para quem está dando os primeiros passos no mercado de trabalho.</p>
 
-    <form id="form-cadastro" asp-action="CadastrarCandidato" method="post">
-        <!-- Etapa 1: Login -->
-        <div class="step active" id="step-login">
+    @if (etapa == 1)
+    {
+        <form id="form-cadastro" asp-action="CadastrarCandidato" method="post">
+            <input type="hidden" name="etapa" value="1" />
+            <input type="hidden" name="TipoUsuario" value="@Model.TipoUsuario" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <h2>Informações para login</h2>
             <div class="inputs-container">
                 <div>
                     <label for="Email">Digite seu e-mail:</label>
-                    <input type="email" id="Email" name="Email" required />
+                    <input type="email" id="Email" name="Email" value="@Model.Email" required />
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 </div>
                 <div>
                     <label for="Senha">Digite sua senha:</label>
                     <input type="password" id="Senha" name="Senha" required />
+                    @Html.ValidationMessageFor(m => m.Senha, "", new { @class = "text-danger" })
                 </div>
                 <div>
                     <label for="ConfirmarSenha">Confirme sua senha:</label>
                     <input type="password" id="ConfirmarSenha" name="ConfirmarSenha" required />
+                   
                 </div>
                 <div>
                     <label for="Telefone">Telefone:</label>
-                    <input type="tel" id="Telefone" name="Telefone" required />
+                    <input type="tel" id="Telefone" name="Telefone" value="@Model.Telefone" required />
+                    @Html.ValidationMessageFor(m => m.Telefone, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <button type="button" id="btn-continuar">Continuar</button>
-        </div>
-
-        <!-- Etapa 2: Dados Pessoais -->
-        <div class="step" id="step-dados">
+            <button type="submit">Continuar</button>
+        </form>
+    }
+    else if (etapa == 2)
+    {
+        <form id="form-cadastro" asp-action="CadastrarCandidato" method="post">
+            <input type="hidden" name="etapa" value="2" />
+            <input type="hidden" name="Email" value="@Model.Email" />
+            <input type="hidden" name="Senha" value="@Model.Senha" />
+            <input type="hidden" name="TipoUsuario" value="@Model.TipoUsuario" />
+            <input type="hidden" name="Telefone" value="@Model.Telefone" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <h2>Dados Pessoais</h2>
             <div class="inputs-container">
                 <div>
                     <label for="NomeCompleto">Nome completo:</label>
-                    <input type="text" id="NomeCompleto" name="NomeCompleto" required />
+                    <input type="text" id="NomeCompleto" name="NomeCompleto" value="@Model.NomeCompleto" required />
+                    @Html.ValidationMessageFor(m => m.NomeCompleto, "", new { @class = "text-danger" })
                 </div>
                 <div>
                     <label for="DataNascimento">Data de nascimento:</label>
-                    <input type="date" id="DataNascimento" name="DataNascimento" required />
+                    <input type="date" id="DataNascimento" name="DataNascimento" value="@(Model.DataNascimento.ToString("yyyy-MM-dd"))" required max="@DateTime.Now.AddYears(-14).ToString("yyyy-MM-dd")" min="1900-01-01" />
+
+                    @Html.ValidationMessageFor(m => m.DataNascimento, "", new { @class = "text-danger" })
                 </div>
                 <div>
                     <label for="CPF">CPF:</label>
-                    <input type="text" id="CPF" name="CPF" maxlength="14" required />
+                    <input type="text" id="CPF" name="CPF" maxlength="14" value="@Model.CPF" required />
+                    @Html.ValidationMessageFor(m => m.CPF, "", new { @class = "text-danger" })
                 </div>
                 <div>
-                    <label for="cep">CEP:</label>
-                    <input type="text" id="cep" name="cep" maxlength="9" required />
+                    <label for="CEP">CEP:</label>
+                    <input type="text" id="CEP" name="CEP" maxlength="9" value="@Model.CEP" required />
+                    @Html.ValidationMessageFor(m => m.CEP, "", new { @class = "text-danger" })
                 </div>
                 <div>
-                    <label for="logradouro">Rua:</label>
-                    <input type="text" id="logradouro" name="logradouro" required />
+                    <label for="Logradouro">Rua:</label>
+                    <input type="text" id="Logradouro" name="Logradouro" value="@Model.Logradouro" required readonly />
+
+                    @Html.ValidationMessageFor(m => m.Logradouro, "", new { @class = "text-danger" })
                 </div>
                 <div>
-                    <label for="bairro">Bairro:</label>
-                    <input type="text" id="bairro" name="bairro" required />
+                    <label for="Bairro">Bairro:</label>
+                    <input type="text" id="Bairro" name="Bairro" value="@Model.Bairro" required readonly />
+                    @Html.ValidationMessageFor(m => m.Bairro, "", new { @class = "text-danger" })
                 </div>
                 <div>
-                    <label for="numero">Número:</label>
-                    <input type="text" id="numero" name="numero" required />
+                    <label for="Numero">Número:</label>
+                    <input type="text" id="Numero" name="Numero" value="@Model.Numero" required />
+                    @Html.ValidationMessageFor(m => m.Numero, "", new { @class = "text-danger" })
                 </div>
                 <div>
-                    <label for="cidade">Cidade:</label>
-                    <input type="text" id="cidade" name="cidade" required />
+                    <label for="Cidade">Cidade:</label>
+                    <input type="text" id="Cidade" name="Cidade" value="@Model.Cidade" required readonly />
+                    @Html.ValidationMessageFor(m => m.Cidade, "", new { @class = "text-danger" })
                 </div>
                 <div>
-                    <label for="uf">Estado:</label>
-                    <input type="text" id="uf" name="uf" required />
+                    <label for="UF">Estado:</label>
+                    <input type="text" id="UF" name="UF" value="@Model.UF" required readonly />
+                    @Html.ValidationMessageFor(m => m.UF, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <button type="button" id="btn-voltar">Voltar</button>
+            <button type="button" onclick="window.history.back();">Voltar</button>
             <button type="submit">Cadastrar</button>
-        </div>
-    </form>
-
-    <script src="~/js/script.js"></script>
+        </form>
+    }
+  
 </body>
 </html>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+<script>
+    $('#CEP').on('blur', function () {
+        var cep = $(this).val().replace(/\D/g, '');
+        if (cep.length === 8) {
+            $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function (data) {
+                if (!data.erro) {
+                    $('#Logradouro').val(data.logradouro).prop('readonly', true);
+                    $('#Bairro').val(data.bairro).prop('readonly', true);
+                    $('#Cidade').val(data.localidade).prop('readonly', true);
+                    $('#UF').val(data.uf).prop('readonly', true);
+                } else {
+                    alert('CEP não encontrado.');
+                    $('#Logradouro, #Bairro, #Cidade, #UF').val('').prop('readonly', false);
+                }
+            });
+        } else {
+            $('#Logradouro, #Bairro, #Cidade, #UF').val('').prop('readonly', false);
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#CEP').mask('00000-000');
+        $('#CPF').mask('000.000.000-00');
+        $('#Telefone').mask('(00) 00000-0000');
+    });
+</script>
+
+<script>
+    $('#form-cadastro').on('submit', function (e) {
+        var senha = $('#Senha').val();
+        var confirmar = $('#ConfirmarSenha').val();
+        if (senha !== confirmar) {
+            alert('As senhas não coincidem!');
+            $('#Senha, #ConfirmarSenha').val('');
+            e.preventDefault();
+        }
+    });
+</script>

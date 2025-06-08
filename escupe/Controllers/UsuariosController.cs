@@ -28,23 +28,66 @@ public class UsuariosController : Controller
     }
 
     [HttpGet]
-    public IActionResult CadastrarCandidato(string tipoUsuario)
+    public IActionResult CadastrarCandidato(int etapa = 1, string tipoUsuario = "C")
     {
-        var model = new CadastroCandidatoViewModel
+        var model = new CadastroCandidatoViewModel();
+        model.TipoUsuario = tipoUsuario;
+        ViewBag.Etapa = etapa;
+
+        if (etapa == 2)
         {
-            TipoUsuario = tipoUsuario
-        };
+            model.Email = TempData["Email"] as string ?? string.Empty;
+            model.Telefone = TempData["Telefone"] as string ?? string.Empty;
+            model.Senha = TempData["Senha"] as string ?? string.Empty;
+            model.TipoUsuario = TempData["TipoUsuario"] as string ?? tipoUsuario;
+            TempData.Keep();
+        }
         return View(model);
     }
 
+
+    // C#
     [HttpPost]
-    public async Task<IActionResult> CadastrarCandidato(CadastroCandidatoViewModel model)
+    public async Task<IActionResult> CadastrarCandidato(CadastroCandidatoViewModel model, int etapa, string tipoUsuario)
     {
+        ViewBag.Etapa = etapa;
+
+        if (etapa == 1)
+        {
+            // Valida apenas os campos da etapa 1
+            ModelState.Remove(nameof(model.NomeCompleto));
+            ModelState.Remove(nameof(model.CPF));
+            ModelState.Remove(nameof(model.Logradouro));
+            ModelState.Remove(nameof(model.Numero));
+            ModelState.Remove(nameof(model.Bairro));
+            ModelState.Remove(nameof(model.Cidade));
+            ModelState.Remove(nameof(model.UF));
+            ModelState.Remove(nameof(model.CEP));
+            ModelState.Remove(nameof(model.Complemento));
+            ModelState.Remove(nameof(model.TipoUsuario));
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Salva os dados da etapa 1 temporariamente (TempData)
+            TempData["Email"] = model.Email;
+            TempData["Telefone"] = model.Telefone;
+            TempData["Senha"] = model.Senha;
+            TempData["TipoUsuario"] = model.TipoUsuario;
+
+            // Redireciona para GET da etapa 2
+            return RedirectToAction("CadastrarCandidato", new { etapa = 2 });
+        }
+
+        // Valida todos os campos na etapa 2
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
+        // Validação de CEP
         model.CEP = new string(model.CEP.Where(char.IsDigit).ToArray());
         var (isCepValido, enderecoViaCepResult) = await _cepService.ValidarCEP(model.CEP);
         if (!isCepValido)
@@ -73,11 +116,11 @@ public class UsuariosController : Controller
             {
                 NomeCompleto = model.NomeCompleto,
                 CPF = model.CPF,
-                Email = model.Email,
-                Senha = model.Senha,
-                Telefone = model.Telefone,
+                Email = TempData["Email"] as string ?? model.Email,
+                Senha = TempData["Senha"] as string ?? model.Senha,
+                Telefone = TempData["Telefone"] as string ?? model.Telefone,
                 EnderecoId = endereco.Id,
-                TipoUsuario = model.TipoUsuario // <-- Adicione esta linha
+                TipoUsuario = TempData["TipoUsuario"] as string ?? model.TipoUsuario
             };
             _context.Candidato.Add(candidato);
             await _context.SaveChangesAsync();
@@ -87,11 +130,19 @@ public class UsuariosController : Controller
             TempData["MensagemSucesso"] = "Cadastro de candidato realizado com sucesso!";
             return RedirectToAction("Index", "Home");
         }
-        catch (Exception ex)
+        catch (DbUpdateException ex)
         {
             await transaction.RollbackAsync();
-            Console.WriteLine("Erro ao salvar candidato: " + ex.Message);
-            ModelState.AddModelError("", "Ocorreu um erro ao salvar os dados. Tente novamente.");
+
+            // Verifica se a exceção é de duplicidade de CPF
+            if (ex.InnerException != null && ex.InnerException.Message.Contains("UQ__Candidat__C1F89731"))
+            {
+                ModelState.AddModelError("CPF", " Esse CPF já esta vinculado a uma conta .");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Ocorreu um erro ao salvar os dados. Tente novamente.");
+            }
             return View(model);
         }
     }
