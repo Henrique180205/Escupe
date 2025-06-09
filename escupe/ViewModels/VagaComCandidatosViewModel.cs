@@ -15,6 +15,7 @@ public class CandidatoViewModel
     public int Id { get; set; }
     public string Nome { get; set; }
     public string TituloProfissional { get; set; }
+    public string CurriculoPath { get; set; }
     public DateTime DataCandidatura { get; set; }
     public string Status { get; set; }
 }

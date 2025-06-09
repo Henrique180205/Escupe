@@ -1,7 +1,7 @@
 ﻿@model List<VagaComCandidatosViewModel>
 @{
     ViewData["Title"] = "Minhas Vagas";
-    Layout = "_Layout";
+    Layout = null;
 }
 <link rel="stylesheet" href="~/css/criarvagas.css" />
 
@@ -46,13 +46,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var cand in vaga.Candidatos)
+                                    @foreach (var candidato in vaga.Candidatos)
                                     {
                                         <tr>
-                                            <td>@cand.Nome</td>
-                                            <td>@cand.TituloProfissional</td>
-                                            <td>@cand.DataCandidatura.ToShortDateString()</td>
-                                            <td>@cand.Status</td>
+                                            <td>@candidato.Nome</td>
+                                            <td>@candidato.TituloProfissional</td>
+                                            <td>@candidato.DataCandidatura.ToShortDateString()</td>
+                                            <td>@candidato.Status</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(candidato.CurriculoPath))
+                                                {
+                                                    <a href="@candidato.CurriculoPath" target="_blank">Baixar Currículo</a>
+                                                }
+                                                else
+                                                {
+                                                    <span>Não enviado</span>
+                                                }
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

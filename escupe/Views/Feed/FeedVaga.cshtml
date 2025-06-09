@@ -2,9 +2,8 @@
 @{
     var cargo = Context.Request.Query["cargo"].ToString();
     var localizacao = Context.Request.Query["localizacao"].ToString();
-    Layout = null; // ou seu layout, se houver
+    Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -18,7 +17,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-
     <header class="site-header">
         <a href="@Url.Action("Index", "Vaga")" class="icone-container">
             <img src="~/imagens/icone.png" alt="Logo do Site" class="site-logo" />
@@ -69,23 +67,22 @@
             <div class="modal-content">
                 <span class="close" id="closeModalBtn">&times;</span>
                 <h2>Informações do Candidato</h2>
-                <form>
+                <form method="post" action="/Feed/Candidatar" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="vagaId" id="vagaIdInput" />
                     <label>Email:</label>
-                    <input type="email" required />
+                    <input type="email" name="email" required />
                     <label>Telefone:</label>
-                    <input type="tel" required />
+                    <input type="tel" name="telefone" required />
                     <label>Currículo (PDF):</label>
-                    <input type="file" accept=".pdf" required />
+                    <input type="file" name="curriculo" accept=".pdf" required />
                     <label>Breve descrição sobre você:</label>
-                    <textarea rows="5" required></textarea>
+                    <textarea name="descricao" rows="5" required></textarea>
                     <button type="submit" class="submit-btn">Enviar</button>
                 </form>
             </div>
         </div>
     </main>
-
-    <!-- Painel flutuante de detalhes da vaga -->
-    <div id="painelDetalhes" class="painel-detalhes-flutuante" style="display:none"></div>
 
     <footer>
         <p><strong>Contato:</strong> EmpresaEsculp@gmail.com</p>
@@ -101,33 +98,32 @@
             var vaga = Model.Vagas[i];
             <text>
                 `<div class="btn-detalhes">
-                            <button class="btn-apply" onclick="abrirModal(event)">Candidatar-se</button>
-                        </div>
-                        <section class="details">
-                            <h4>📄 Descrição da vaga</h4>
-                            <p>@vaga.Descricao</p>
-                        </section>
-                        <section class="details">
-                            <h4>🧭 Localização</h4>
-                            <p>@vaga.Localizacao</p>
-                        </section>
-                        <section class="details">
-                            <h4>💰 Salário</h4>
-                            <p>@vaga.Salario.ToString("C")</p>
-                        </section>
-                        <section class="details">
-                            <h4>🎁 Benefícios</h4>
-                            <p>@vaga.Beneficios</p>
-                        </section>
-                        <section class="details">
-                            <h4>📅 Publicação</h4>
-                            <p>@vaga.DataPublicacao.ToString("dd/MM/yyyy")</p>
-                        </section>`
+                                        <button class="btn-apply" onclick="abrirModal(event, @vaga.Id)">Candidatar-se</button>
+                                    </div>
+                                    <section class="details">
+                                        <h4>📄 Descrição da vaga</h4>
+                                        <p>@vaga.Descricao</p>
+                                    </section>
+                                    <section class="details">
+                                        <h4>🧭 Localização</h4>
+                                        <p>@vaga.Localizacao</p>
+                                    </section>
+                                    <section class="details">
+                                        <h4>💰 Salário</h4>
+                                        <p>@vaga.Salario.ToString("C")</p>
+                                    </section>
+                                    <section class="details">
+                                        <h4>🎁 Benefícios</h4>
+                                        <p>@vaga.Beneficios</p>
+                                    </section>
+                                    <section class="details">
+                                        <h4>📅 Publicação</h4>
+                                        <p>@vaga.DataPublicacao.ToString("dd/MM/yyyy")</p>
+                                    </section>`
                 @(i < Model.Vagas.Count - 1 ? "," : "")
             </text>
         }
                 ];
-
 
         function mostrarDetalhes(index) {
             let painel = document.getElementById('painelDetalhes');
@@ -144,10 +140,11 @@
             painel.innerHTML = '<p class="placeholder" id="placeholderMsg">Clique em uma vaga para ver os detalhes</p>';
         });
 
-        // Abre o modal de candidatura
-        function abrirModal(event) {
+        // Abre o modal de candidatura e define o vagaId
+        function abrirModal(event, vagaId) {
             event.stopPropagation();
             document.getElementById("formModal").style.display = "block";
+            document.getElementById("vagaIdInput").value = vagaId;
         }
 
         // Fecha o painel de detalhes ao clicar fora dele
@@ -170,16 +167,17 @@
             });
 
             form.addEventListener("submit", e => {
-                e.preventDefault();
-                const msg = document.createElement("div");
-                msg.className = "confirmation";
-                msg.textContent = "✔ Formulário enviado com sucesso!";
-                form.appendChild(msg);
-                form.reset();
-                setTimeout(() => {
-                    modal.style.display = "none";
-                    msg.remove();
-                }, 3000);
+                // Aqui você pode remover o preventDefault se quiser submeter normalmente
+                // e.preventDefault();
+                // const msg = document.createElement("div");
+                // msg.className = "confirmation";
+                // msg.textContent = "✔ Formulário enviado com sucesso!";
+                // form.appendChild(msg);
+                // form.reset();
+                // setTimeout(() => {
+                //     modal.style.display = "none";
+                //     msg.remove();
+                // }, 3000);
             });
         });
     </script>

@@ -14,16 +14,76 @@ public class FeedController : Controller
         _context = context;
     }
 
-    [HttpGet]
-    public IActionResult VerVagas()
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Candidatar(
+    int vagaId,
+    string email,
+    string telefone,
+    IFormFile curriculo,
+    string descricao)
     {
-        var empresaId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (empresaId == null)
+        // Recupera o id do candidato logado
+        var candidatoIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (candidatoIdStr == null)
             return RedirectToAction("Login", "Home");
 
+        int candidatoId = int.Parse(candidatoIdStr);
+
+        // Salva o arquivo do currículo
+        string curriculoPath = null;
+        if (curriculo != null && curriculo.Length > 0)
+        {
+            var fileName = Guid.NewGuid() + Path.GetExtension(curriculo.FileName);
+            var savePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "curriculos");
+            if (!Directory.Exists(savePath))
+                Directory.CreateDirectory(savePath);
+
+            var filePath = Path.Combine(savePath, fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await curriculo.CopyToAsync(stream);
+            }
+            curriculoPath = "/curriculos/" + fileName;
+        }
+
+        var candidatura = new Candidatura
+        {
+            VagaId = vagaId,
+            CandidatoId = candidatoId,
+            Email = email,
+            Telefone = telefone,
+            CurriculoPath = curriculoPath,
+            Descricao = descricao,
+            DataCandidatura = DateTime.Now,
+            Status = "Pendente"
+        };
+
+        _context.Candidatura.Add(candidatura);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("FeedVaga");
+    }
+
+
+
+
+
+
+
+    [HttpGet]
+    public IActionResult MinhasVagas()
+    {
+        var empresaIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (empresaIdStr == null)
+            return RedirectToAction("Login", "Home");
+
+        int empresaId = int.Parse(empresaIdStr);
+
         var vagas = _context.Vagas
-            .Where(v => v.EmpresaId == int.Parse(empresaId))
-            .Include(v => v.Candidato) // Supondo que existe a navegação
+            .Where(v => v.EmpresaId == empresaId)
             .Select(v => new VagaComCandidatosViewModel
             {
                 Id = v.Id,
@@ -33,18 +93,22 @@ public class FeedController : Controller
                 Salario = v.Salario,
                 Beneficios = v.Beneficios,
                 DataPublicacao = v.DataPublicacao,
-                Candidatos = v.Candidatos.Select(c => new CandidatoViewModel
-                {
-                    Id = c.Id,
-                    Nome = c.Nome,
-                    TituloProfissional = c.TituloProfissional,
-                    DataCandidatura = c.DataCandidatura,
-                    Status = c.Status
-                }).ToList()
+                Candidatos = _context.Candidatura
+                    .Where(c => c.VagaId == v.Id)
+                    .Select(c => new CandidatoViewModel
+                    {
+                        Id = c.Candidato.Id,
+                        Nome = c.Candidato.NomeCompleto,
+                        
+                        DataCandidatura = c.DataCandidatura,
+                        Status = c.Status,
+                        CurriculoPath = c.CurriculoPath // Adicione este campo no ViewModel
+                    }).ToList()
             }).ToList();
 
         return View(vagas);
     }
+
     [HttpGet]
     public IActionResult PerfilCandidato()
     {
