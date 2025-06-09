@@ -1,7 +1,32 @@
 ﻿@model escupe.ViewModels.CadastroEmpresaViewModel
 @{
     var etapa = ViewBag.Etapa ?? 1;
+    Layout = null;
 }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="icon" href="~/imagens/favicon.png" type="image/png">
+    <title>@ViewData["Title"]</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+</head>
+
+<header class="site-header">
+    <a href="index.html" class="icone-container">
+        <img src="imagens/icone.png" alt="Logo do Site" class="site-logo">
+        <span class="site-nome">Esculp</span>
+    </a>
+</header>
+
+<h1 id="h1-cadastro">Conecte sua empresa a novos talentos</h1>
+<p id="p-cadastro">Cadastre sua empresa gratuitamente e encontre jovens profissionais prontos para crescer junto com você.</p>
 
 @if (etapa == 1)
 {
@@ -9,19 +34,31 @@
         <input asp-for="TipoUsuario" type="hidden" />
         <input type="hidden" name="etapa" value="1" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div>
-            <label asp-for="Email"></label>
-            <input asp-for="Email" class="form-control" />
+
+        <div class="step active">
+            <h2>Informações de Acesso</h2>
+            <p>Preencha as informações abaixo:</p>
+
+            <div class="inputs-container">
+                <div>
+                    <label for="email_empresa">E-mail corporativo:</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <div>
+                    <label for="telefone_empresa">Telefone para contato:</label>
+                    <input asp-for="Telefone" class="form-control" />
+                </div>
+                <div>
+                    <label for="senha_empresa">Senha:</label>
+                    <input asp-for="Senha" class="form-control" type="password" />
+                </div>
+                <div>
+                    <label for="confirmar_senha_empresa">Confirme sua senha:</label>
+                    <input asp-for="confSenha" class="form-control" type="password" />
+                </div>
+            </div>
+            <button type="submit">Continuar</button>
         </div>
-        <div>
-            <label asp-for="Telefone"></label>
-            <input asp-for="Telefone" class="form-control" />
-        </div>
-        <div>
-            <label asp-for="Senha"></label>
-            <input asp-for="Senha" class="form-control" type="password" />
-        </div>
-        <button type="submit">Próxima etapa</button>
     </form>
 }
 else if (etapa == 2)
@@ -34,56 +71,60 @@ else if (etapa == 2)
         <input type="hidden" asp-for="Senha" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div>
-            <label asp-for="NomeFantasia"></label>
-            <input asp-for="NomeFantasia" class="form-control" />
-        </div>
-        <div>
-            <label asp-for="RazaoSocial"></label>
-            <input asp-for="RazaoSocial" class="form-control" />
-        </div>
-        <div>
-            <label asp-for="CNPJ"></label>
-            <input asp-for="CNPJ" class="form-control" />
-        </div>
-        <div>
-            <label asp-for="AreaAtuacao"></label>
-            <input asp-for="AreaAtuacao" class="form-control" />
+        <div class="step active">
+            <h2>Dados da Empresa</h2>
+            <p>Preencha as informações abaixo:</p>
+
+            <div class="inputs-container">
+                <div>
+                    <label for="nome_empresa">Nome da empresa:</label>
+                    <input asp-for="NomeFantasia" class="form-control" />
+                </div>
+                <div>
+                    <label for="area_atuacao">Razão social:</label>
+                    <input asp-for="RazaoSocial" class="form-control" />
+                </div>
+                <div>
+                    <label for="cnpj">CNPJ da empresa:</label>
+                    <input asp-for="CNPJ" class="form-control" />
+                </div>
+                <div>
+                    <label for="area_atuacao">Área de atuação:</label>
+                    <input asp-for="AreaAtuacao" class="form-control" />
+                </div>
+
+                <div>
+                    <label for="cep">CEP:</label>
+                    <input asp-for="CEP" class="form-control" id="cep" maxlength="8" onblur="buscarCep()" />
+                </div>
+                <div>
+                    <label for="rua">Rua:</label>
+                    <input asp-for="Logradouro" class="form-control" id="logradouro" readonly />
+                </div>
+                <div>
+                    <label for="número">Número:</label>
+                    <input asp-for="Numero" class="form-control" />
+                </div>
+                <div>
+                    <label for="complemento">Complemento:</label>
+                    <input asp-for="Complemento" class="form-control" />
+                </div>
+                <div>
+                    <label for="bairro">Bairro:</label>
+                    <input asp-for="Bairro" class="form-control" id="bairro" readonly />
+                </div>
+                <div>
+                    <label for="cidade">Cidade:</label>
+                    <input asp-for="Cidade" class="form-control" id="cidade" readonly />
+                </div>
+                <div>
+                    <label for="estado">Estado:</label>
+                    <input asp-for="UF" class="form-control" id="uf" readonly />
+                </div>
+            </div>
+            <button type="submit">Finalizar cadastro</button>
         </div>
 
-        <fieldset>
-            <legend>Endereço</legend>
-            <div>
-                <label asp-for="CEP"></label>
-                <input asp-for="CEP" class="form-control" id="cep" maxlength="8" onblur="buscarCep()" />
-            </div>
-            <div>
-                <label asp-for="Logradouro"></label>
-                <input asp-for="Logradouro" class="form-control" id="logradouro" readonly />
-            </div>
-            <div>
-                <label asp-for="Numero"></label>
-                <input asp-for="Numero" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="Complemento"></label>
-                <input asp-for="Complemento" class="form-control" />
-            </div>
-            <div>
-                <label asp-for="Bairro"></label>
-                <input asp-for="Bairro" class="form-control" id="bairro" readonly />
-            </div>
-            <div>
-                <label asp-for="Cidade"></label>
-                <input asp-for="Cidade" class="form-control" id="cidade" readonly />
-            </div>
-            <div>
-                <label asp-for="UF"></label>
-                <input asp-for="UF" class="form-control" id="uf" readonly />
-            </div>
-        </fieldset>
-
-        <button type="submit">Finalizar cadastro</button>
     </form>
 
 }

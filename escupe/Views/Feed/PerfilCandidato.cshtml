@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="~/css/editar.css" asp-append-version="true" />
 }
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/editar.css" />
+    <link rel="icon" href="~/imagens/favicon.png" type="image/png">
+    <title>@ViewData["Title"]</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+</head>
+
 <header class="site-header">
     <a href="@Url.Action("FeedVaga", "Feed")" class="icone-container">
         <img src="~/imagens/icone.png" alt="Logo do Site" class="site-logo" />
@@ -27,7 +37,7 @@
 
 
             <label for="cpf">CPF:</label>
-           <input type="text" id="cpf" name="CPF" value="@cpfMascarado" readonly />
+            <input type="text" id="cpf" name="CPF" value="@cpfMascarado" readonly />
             <label for="telefone">Telefone:</label>
             <input type="tel" id="telefone" name="Telefone" value="@Model.Telefone" required />
         </section>
@@ -71,7 +81,7 @@
         const formulario = document.querySelector('.formulario');
         const mensagem = document.getElementById('mensagem-sucesso');
 
-        formulario.addEventListener('submit', function(event) {
+        formulario.addEventListener('submit', function (event) {
             event.preventDefault();
             mensagem.classList.add('mostrar');
             setTimeout(() => {

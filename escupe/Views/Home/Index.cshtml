@@ -1,6 +1,5 @@
 ﻿@model escupe.Models.LoginModel
 @{
-   
     Layout = null;
 }
 @section Styles {
@@ -16,9 +15,26 @@
     <link rel="icon" href="~/imagens/favicon.png" type="image/png" />
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        button {
+            width: 240px;
+            height: 40px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
 
+        a {
+            text-decoration: underline;
+            color: #2755F8;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
     <img src="~/imagens/imgsuperior.svg" alt="Escultura" id="escultura-img" />
-
     <header class="site-header">
         <a href="/" class="icone-container">
             <img src="~/imagens/icone.png" alt="Logo do Site" class="site-logo" />
@@ -28,39 +44,30 @@
             <a asp-controller="Home" asp-action="EscolhaTipo" class="botao">registrar-se</a>
         </div>
     </header>
-
     <section class="login-container">
         <h1>De o primeiro passo na sua carreira com apoio e oportunidade.</h1>
-
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
         <form asp-action="Login" method="post" class="login-form" id="loginForm">
             <h2>Insira o e-mail ou CNPJ</h2>
             <input asp-for="Email" type="text" placeholder="Insira seu e-mail ou CNPJ" required />
             <span asp-validation-for="Email" class="text-danger"></span>
-
             <h2>Insira a senha</h2>
             <input asp-for="Senha" type="password" placeholder="Insira sua senha" required />
             <span asp-validation-for="Senha" class="text-danger"></span>
-
             <button type="submit"><h1>Entrar</h1></button>
-
             <div class="divisor">
                 <div class="divisor-line"></div>
                 <div class="divisor-texto">ou</div>
                 <div class="divisor-line"></div>
             </div>
-
             <h2 id="primeira-vez">
                 Primeira vez aqui? <a asp-controller="Home" asp-action="EscolhaTipo" id="crie-conta-link">Crie a sua conta</a>
             </h2>
+            <div class="svg-inferior">
+                <img src="~/imagens/svg-inferior.svg" alt="decoração inferior esquerda" />
+            </div>
         </form>
-
-        <div class="svg-inferior">
-            <img src="~/imagens/svg-inferior.svg" alt="decoração inferior esquerda" />
-        </div>
     </section>
-
     <section class="section-candidatos">
         <div class="textos-superiores">
             <h1 class="titulos">Oportunidade para quem quer começar!</h1>
@@ -106,7 +113,6 @@
             </div>
         </div>
     </section>
-
     <section class="para-empresa">
         <h1 class="titulos">Oportunidade para se apresentar a sua empresa!</h1>
         <div class="underline"></div>
@@ -115,26 +121,12 @@
             que eles devem fazer parte de sua equipe.
         </p>
     </section>
-
     <footer>
         <p><strong>Contato:</strong> EmpresaEsculp@gmail.com</p>
         <p><strong>Busque por:</strong> Empresas, Vagas, Oportunidade</p>
         <strong>Copyright © 2025. Esculp LLC. “Esculp” o logotipo do Esculp são marcas comerciais pertencentes à Esculp LLC.</strong>
     </footer>
-
-    <!-- Modal -->
-    <div id="tipoCadastroModal" class="modal" style="display: none;">
-        <div style="background: #fff; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; text-align: center;">
-            <h2>Você é um candidato ou uma empresa?</h2>
-            <div style="margin-top: 20px;">
-                <button id="btnCandidato" style="padding: 10px 20px; margin-right: 10px; cursor: pointer">Candidato</button>
-                <button id="btnEmpresa" style="padding: 10px 20px; cursor: pointer">Empresa</button>
-            </div>
-        </div>
-    </div>
-
+   
     <script src="~/js/scriptfront.js"></script>
-</head>
-<body>
 </body>
 </html>

@@ -1,3 +1,10 @@
+:root {
+    --fonte1: 'Satoshi', sans-serif;
+    --fonte2: 'Inter', sans-serif;
+    --cor1: #2755F8;
+    --cor2: #131313;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -135,7 +142,7 @@ body {
 }
 
 .mensagem-flutuante {
-    padding: 15px 20px;
+    padding: 10px 15px;
     margin-bottom: 20px;
     border-radius: 5px;
     font-size: 1em;
@@ -149,9 +156,9 @@ body {
 }
 
     .mensagem-flutuante.sucesso {
-        background-color: #28a745;
+        background-color: rgba(39, 84, 248, 0.726);
         color: white;
-        border: 1px solid #1e7e34;
+        border: 1px solid #2755F8;
     }
 
     .mensagem-flutuante.erro {

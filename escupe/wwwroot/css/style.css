@@ -85,6 +85,7 @@ p {
 .botoes {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 #link-empresa {
@@ -96,7 +97,7 @@ p {
 }
 
 .login-container {
-    height: 85vh;
+    height: auto;
     padding: 1.7vh 5vw;
     display: flex;
     flex-direction: column;
@@ -118,6 +119,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: 0px;
+    margin-bottom: 30px;
 }
 
 input {
@@ -152,7 +154,8 @@ button {
 
 .login-form button h1 {
     font-size: 20px;
-    margin: 0px 90px;
+    margin: 0px;
+    width: 60px;
 }
 
 .divisor {

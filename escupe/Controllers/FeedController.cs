@@ -14,7 +14,37 @@ public class FeedController : Controller
         _context = context;
     }
 
+    [HttpGet]
+    public IActionResult VerVagas()
+    {
+        var empresaId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (empresaId == null)
+            return RedirectToAction("Login", "Home");
 
+        var vagas = _context.Vagas
+            .Where(v => v.EmpresaId == int.Parse(empresaId))
+            .Include(v => v.Candidato) // Supondo que existe a navegação
+            .Select(v => new VagaComCandidatosViewModel
+            {
+                Id = v.Id,
+                Titulo = v.Titulo,
+                Descricao = v.Descricao,
+                Localizacao = v.Localizacao,
+                Salario = v.Salario,
+                Beneficios = v.Beneficios,
+                DataPublicacao = v.DataPublicacao,
+                Candidatos = v.Candidatos.Select(c => new CandidatoViewModel
+                {
+                    Id = c.Id,
+                    Nome = c.Nome,
+                    TituloProfissional = c.TituloProfissional,
+                    DataCandidatura = c.DataCandidatura,
+                    Status = c.Status
+                }).ToList()
+            }).ToList();
+
+        return View(vagas);
+    }
     [HttpGet]
     public IActionResult PerfilCandidato()
     {

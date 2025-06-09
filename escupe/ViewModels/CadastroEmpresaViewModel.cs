@@ -46,6 +46,7 @@ namespace escupe.ViewModels
         // Campos adicionais para transferência de dados
         public string Email { get; set; }
         public string Senha { get; set; }
-        
+        public string confSenha {get; set;}
+
     }
 }

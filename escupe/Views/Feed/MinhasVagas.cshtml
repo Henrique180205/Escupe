@@ -1,0 +1,82 @@
+﻿@model List<VagaComCandidatosViewModel>
+@{
+    ViewData["Title"] = "Minhas Vagas";
+    Layout = "_Layout";
+}
+<link rel="stylesheet" href="~/css/criarvagas.css" />
+
+<div class="form-container">
+    <h1>Minhas Vagas Criadas</h1>
+    <a asp-action="CriarVaga" class="form-vaga button">Criar Nova Vaga</a>
+    <table class="form-vaga" style="margin-top:20px;">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Localização</th>
+                <th>Salário</th>
+                <th>Data de Criação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vaga in Model)
+            {
+                <tr>
+                    <td>@vaga.Titulo</td>
+                    <td>@vaga.Localizacao</td>
+                    <td>@vaga.Salario.ToString("C")</td>
+                    <td>@vaga.DataPublicacao.ToShortDateString()</td>
+                    <td>
+                        <a asp-action="EditarVaga" asp-route-id="@vaga.Id">Editar</a> |
+                        <a href="#" onclick="mostrarCandidatos(@vaga.Id);return false;">Ver Candidatos</a>
+                    </td>
+                </tr>
+                <tr id="candidatos-@vaga.Id" style="display:none;">
+                    <td colspan="5">
+                        <strong>Candidatos Inscritos:</strong>
+                        @if (vaga.Candidatos != null && vaga.Candidatos.Any())
+                        {
+                            <table style="width:100%;margin-top:10px;">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Título Profissional</th>
+                                        <th>Data da Candidatura</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var cand in vaga.Candidatos)
+                                    {
+                                        <tr>
+                                            <td>@cand.Nome</td>
+                                            <td>@cand.TituloProfissional</td>
+                                            <td>@cand.DataCandidatura.ToShortDateString()</td>
+                                            <td>@cand.Status</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div>Nenhum candidato inscrito.</div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function mostrarCandidatos(id) {
+        var row = document.getElementById('candidatos-' + id);
+        if (row.style.display === 'none') {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    }
+</script>
+

@@ -4,21 +4,26 @@
     Layout = null; // ou seu layout, se houver
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/editar.css" asp-append-version="true" />
+}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/editar.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
 </head>
 
 <header class="site-header">
-    <a href="@Url.Action("/", "Feed")" class="icone-container">
+    <a href="@Url.Action("HomeEmpresa", "Feed")" class="icone-container">
         <img src="@Url.Content("~/imagens/icone.png")" alt="Logo do Site" class="site-logo">
         <span class="site-nome">Esculp</span>
     </a>
 
-    <a href="@Url.Action("EditarEstudante", "Perfil")" class="icone-perfil" title="Perfil">
+    <a href="@Url.Action("PerfilEmpresa", "Perfil")" class="icone-perfil" title="Perfil">
         <svg xmlns="http://www.w3.org/2000/svg" class="perfil-icon" viewBox="0 0 24 24" width="28" height="28">
             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4
         1.79-4 4 1.79 4 4 4zm0 2c-2.67
@@ -32,30 +37,28 @@
     <section class="dashboard-content">
         <div class="actions">
             <a asp-controller="Feed" asp-action="CriarVaga" class="action-card">
-                <div class="action-info">
-                    <h3>➕ Criar Nova Vaga</h3>
-                    <p>Cadastre uma nova vaga para encontrar candidatos ideais.</p>
-                </div>
-            </a>
-        </div>
-
-        <div class="actions">
-            <a href="@Url.Action("MinhasVagas", "Feed")">
-                <section class="action-info">
-                    <h3>👁 Ver Vagas Criadas</h3>
-                    <p>Visualize e gerencie as vagas que sua empresa já cadastrou.</p>
+                <section class="card">
+                    <div class="action-info">
+                        <h3>➕ Criar Nova Vaga</h3>
+                        <p>Cadastre uma nova vaga para encontrar candidatos ideais.</p>
+                    </div>
                 </section>
             </a>
         </div>
 
+        <div class="actions">
+            <section class="card">
+                <a href="@Url.Action("MinhasVagas", "Feed")">
+                    <section class="action-info">
+                        <h3>👁️ Ver Vagas Criadas</h3>
+                        <p>Visualize e gerencie as vagas que sua empresa já cadastrou.</p>
+                    </section>
+                </a>
+            </section>
+        </div>
+
     </section>
 </div>
-
-
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/criarvagas.css" />
-}
 
 @section Scripts {
     <script src="~/js/empresa-dashboard.js"></script>

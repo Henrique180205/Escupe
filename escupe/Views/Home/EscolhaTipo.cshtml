@@ -3,8 +3,18 @@
     ViewBag.Title = "Escolha o Tipo";
     Layout = null; // ou seu layout, se houver
 }
-<link rel="stylesheet" href="~/css/style.css" />
-
+@section Styles {
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="~/imagens/favicon.png" type="image/png">
+    <link rel="stylesheet" href="~/css/style.css" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+</head>
 
 <section class="login-container">
     <h2 class="text-center mb-4">Escolha seu tipo de cadastro</h2>
@@ -36,6 +46,20 @@
     <style>
         * {
             text-align: center;
+        }
+
+        .login-container {
+            text-align: center;
+            align-items: center;
+        }
+
+        h5 {
+            font-size: 1.2em;
+            margin: 15px;
+        }
+
+        .botao {
+            width: 230px;
         }
     </style>
 
