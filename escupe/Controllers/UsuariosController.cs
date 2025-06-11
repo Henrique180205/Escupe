@@ -7,6 +7,7 @@ using escupe.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Runtime.ConstrainedExecution;
 
 public class UsuariosController : Controller
 {
@@ -187,6 +188,7 @@ public class UsuariosController : Controller
         return View(model);
     }
 
+    // C#
     [HttpPost]
     public async Task<IActionResult> CadastrarEmpresa(CadastroEmpresaViewModel model, int etapa, string tipoUsuario)
     {
@@ -208,8 +210,6 @@ public class UsuariosController : Controller
             ModelState.Remove(nameof(model.Complemento));
             ModelState.Remove(nameof(model.TipoUsuario));
 
-
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -224,64 +224,83 @@ public class UsuariosController : Controller
             // Redireciona para GET da etapa 2
             return RedirectToAction("CadastrarEmpresa", new { etapa = 2 });
         }
-        // Valida todos os campos
+
+        // Etapa 2: Remover máscara do CEP e CNPJ ANTES da validação
+        if (!string.IsNullOrEmpty(model.CEP))
+            model.CEP = new string(model.CEP.Where(char.IsDigit).ToArray());
+        if (!string.IsNullOrEmpty(model.CNPJ))
+            model.CNPJ = new string(model.CNPJ.Where(char.IsDigit).ToArray());
+        if (!string.IsNullOrEmpty(model.Telefone))
+            model.Telefone = new string(model.Telefone.Where(char.IsDigit).ToArray());
+
+        // Limpar erros antigos do ModelState para CEP, CNPJ e Telefone
+        ModelState.Remove(nameof(model.CEP));
+        ModelState.Remove(nameof(model.CNPJ));
+        ModelState.Remove(nameof(model.Telefone));
+        // confSenha não deve ser validada nem salva na etapa 2
+        ModelState.Remove(nameof(model.confSenha));
+
+        // Revalidar o model
+        TryValidateModel(model);
+        ModelState.Remove(nameof(model.confSenha));
+
         if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        // Validação de CEP e preenchimento automático do endereço
+        var (cepValido, enderecoViaCep) = await _cepService.ValidarCEP(model.CEP);
+        if (!cepValido)
+        {
+            ModelState.AddModelError("CEP", "O CEP informado é inválido.");
+            return View(model);
+        }
+
+        // C#
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            var endereco = new Endereco
             {
-                return View(model);
-            }
+                Logradouro = !string.IsNullOrEmpty(enderecoViaCep.Logradouro) ? enderecoViaCep.Logradouro : model.Logradouro,
+                Numero = model.Numero,
+                Complemento = model.Complemento,
+                Bairro = !string.IsNullOrEmpty(enderecoViaCep.Bairro) ? enderecoViaCep.Bairro : model.Bairro,
+                Cidade = !string.IsNullOrEmpty(enderecoViaCep.Localidade) ? enderecoViaCep.Localidade : model.Cidade,
+                UF = !string.IsNullOrEmpty(enderecoViaCep.UF) ? enderecoViaCep.UF : model.UF,
+                CEP = model.CEP
+            };
+            _context.Enderecos.Add(endereco);
+            await _context.SaveChangesAsync();
 
-            // Aqui segue o fluxo de salvar no banco, igual ao seu código atual
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
+            var empresa = new Empresa
             {
-                var (cepValido, enderecoViaCep) = await _cepService.ValidarCEP(model.CEP);
-                if (!cepValido)
-                {
-                    ModelState.AddModelError("CEP", "O CEP informado é inválido.");
-                    return View(model);
-                }
+                RazaoSocial=model.RazaoSocial,
+                NomeFantasia = model.NomeFantasia,
+                CNPJ = model.CNPJ,
+                Email = model.Email,
+                Senha = model.Senha,
+                Telefone = model.Telefone,
+                EnderecoId = endereco.Id,
+                TipoUsuario = model.TipoUsuario
+            };
+            _context.Empresas.Add(empresa);
+            await _context.SaveChangesAsync();
 
-                var endereco = new Endereco
-                {
-                    Logradouro = enderecoViaCep.Logradouro,
-                    Numero = model.Numero,
-                    Complemento = model.Complemento,
-                    Bairro = enderecoViaCep.Bairro,
-                    Cidade = enderecoViaCep.Localidade,
-                    UF = enderecoViaCep.UF,
-                    CEP = model.CEP
-                };
-                _context.Enderecos.Add(endereco);
-                await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
 
-                var empresa = new Empresa
-                {
-                    NomeFantasia = model.NomeFantasia,
-                    CNPJ = model.CNPJ,
-                    Email = model.Email,
-                    Senha = model.Senha,
-                    Telefone = model.Telefone,
-                    EnderecoId = endereco.Id,
-                    TipoUsuario = model.TipoUsuario
-                };
-                _context.Empresas.Add(empresa);
-                await _context.SaveChangesAsync();
-
-                await transaction.CommitAsync();
-
-                TempData["MensagemSucesso"] = "Cadastro de empresa realizado com sucesso!";
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                Console.WriteLine("Erro ao salvar empresa: " + ex.Message);
-                ModelState.AddModelError("", "Ocorreu um erro ao salvar os dados. Tente novamente.");
-                return View(model);
-            }
-        
-
-        // Caso etapa inválida
-        return View(model);
+            TempData["MensagemSucesso"] = "Cadastro de empresa realizado com sucesso!";
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            Console.WriteLine("Erro ao salvar empresa: " + ex.Message);
+            ModelState.AddModelError("", "Ocorreu um erro ao salvar os dados. Tente novamente.");
+            return View(model);
+        }
     }
+
+
 }

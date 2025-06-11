@@ -4,8 +4,8 @@
     Layout = null;
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+@section Styles{
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true"/>
 }
 
 <head>
@@ -38,7 +38,7 @@
         <div class="step active">
             <h2>Informações de Acesso</h2>
             <p>Preencha as informações abaixo:</p>
-
+            
             <div class="inputs-container">
                 <div>
                     <label for="email_empresa">E-mail corporativo:</label>
@@ -86,28 +86,37 @@ else if (etapa == 2)
                 </div>
                 <div>
                     <label for="cnpj">CNPJ da empresa:</label>
-                    <input asp-for="CNPJ" class="form-control" />
+                    <input asp-for="CNPJ" class="form-control" id="CNPJ" />
                 </div>
                 <div>
                     <label for="area_atuacao">Área de atuação:</label>
-                    <input asp-for="AreaAtuacao" class="form-control" />
+                    <select asp-for="AreaAtuacao" class="form-control" id="area_atuacao" required>
+                        <option value="">Selecione</option>
+                        <option value="administracao">Administração</option>
+                        <option value="tecnologia">Tecnologia da Informação</option>
+                        <option value="comercio">Comércio / Varejo</option>
+                        <option value="educacao">Educação</option>
+                        <option value="saude">Saúde</option>
+                        <option value="industria">Indústria</option>
+                        <option value="servicos">Serviços Gerais</option>
+                        <option value="outros">Outros</option>
+                    </select>
                 </div>
-
                 <div>
                     <label for="cep">CEP:</label>
-                    <input asp-for="CEP" class="form-control" id="cep" maxlength="8" onblur="buscarCep()" />
+                    <input asp-for="CEP" class="form-control" id="cep" maxlength="9" />
                 </div>
                 <div>
                     <label for="rua">Rua:</label>
                     <input asp-for="Logradouro" class="form-control" id="logradouro" readonly />
                 </div>
                 <div>
-                    <label for="número">Número:</label>
-                    <input asp-for="Numero" class="form-control" />
+                    <label for="numero">Número:</label>
+                    <input asp-for="Numero" class="form-control" id="numero" />
                 </div>
                 <div>
                     <label for="complemento">Complemento:</label>
-                    <input asp-for="Complemento" class="form-control" />
+                    <input asp-for="Complemento" class="form-control" id="complemento" />
                 </div>
                 <div>
                     <label for="bairro">Bairro:</label>
@@ -122,35 +131,45 @@ else if (etapa == 2)
                     <input asp-for="UF" class="form-control" id="uf" readonly />
                 </div>
             </div>
-            <button type="submit">Finalizar cadastro</button>
+            <div>
+                <button type="submit" class="btn btn-primary btn-centralizado">Finalizar Cadastro</button>
+            </div>
         </div>
-
+        
+        
     </form>
-
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 <script>
-    function buscarCep() {
-        var cep = document.getElementById('cep').value.replace(/\D/g, '');
+    $(document).ready(function () {
+        $('#Telefone').mask('(00) 00000-0000');
+        // Máscara de e-mail geralmente não é aplicada, mas pode validar com regex no backend
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#CNPJ').mask('00.000.000/0000-00');
+        $('#cep').mask('00000-000');
+    });
+
+    $('#cep').on('blur', function () {
+        var cep = $(this).val().replace(/\D/g, '');
         if (cep.length === 8) {
-            fetch('/api/cep/' + cep)
-                .then(response => {
-                    if (!response.ok) throw new Error('CEP não encontrado');
-                    return response.json();
-                })
-                .then(data => {
-                    document.getElementById('logradouro').value = data.logradouro || '';
-                    document.getElementById('bairro').value = data.bairro || '';
-                    document.getElementById('cidade').value = data.localidade || '';
-                    document.getElementById('uf').value = data.uf || '';
-                })
-                .catch(() => {
-                    document.getElementById('logradouro').value = '';
-                    document.getElementById('bairro').value = '';
-                    document.getElementById('cidade').value = '';
-                    document.getElementById('uf').value = '';
-                    alert('CEP inválido ou não encontrado.');
-                });
+            $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function (data) {
+                if (!data.erro) {
+                    $('#logradouro').val(data.logradouro).prop('readonly', true);
+                    $('#bairro').val(data.bairro).prop('readonly', true);
+                    $('#cidade').val(data.localidade).prop('readonly', true);
+                    $('#uf').val(data.uf).prop('readonly', true);
+                } else {
+                    alert('CEP não encontrado.');
+                    $('#logradouro, #bairro, #cidade, #uf').val('').prop('readonly', false);
+                }
+            });
+        } else {
+            $('#logradouro, #bairro, #cidade, #uf').val('').prop('readonly', false);
         }
-    }
+    });
 </script>

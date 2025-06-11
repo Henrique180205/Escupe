@@ -4,6 +4,11 @@
     var localizacao = Context.Request.Query["localizacao"].ToString();
     Layout = null;
 }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/vagas.css" asp-append-version="true" />
+}
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -33,7 +38,7 @@
     <form method="get" action="@Url.Action("FeedVaga", "Feed")" class="search-bar">
         <input type="text" name="cargo" placeholder="Procure por cargo, vaga ou setor" value="@cargo" />
         <input type="text" name="localizacao" placeholder="Cidade, estado ou 'remoto'" value="@localizacao" />
-        <button type="submit">Buscar</button>
+        <button class="buscar" type="submit">Buscar</button>
     </form>
 
     <main>
@@ -50,7 +55,7 @@
                     <div class="tag">@vaga.Setor</div>
                     <div class="tag">@vaga.DataPublicacao.ToString("MMMM yyyy")</div>
                 </div>
-                <p>@vaga.Descricao</p>
+                <p class="limite-duas-linhas">@vaga.Descricao</p>
                 <div class="card-footer">
                     <span>Postado @vaga.DataPublicacao dias atrás</span>
                     <span class="salario">R$ @vaga.Salario.ToString("N2")</span>
@@ -201,8 +206,9 @@
             margin-left: 40px; /* Opcional: afasta da borda esquerda */
         }
         .card {
-            width: 360px;
+            width: auto;
             height: auto;
+            max-width: 450px;
             margin: 0;
             left: 0px;
             top: 0px;
@@ -314,6 +320,17 @@
             color: white;
         }
 
+        .buscar{
+            background-color: #000;
+            color: white;
+            border-radius: 20px;
+            font-family: "satoshi";
+            width: 100px;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -375,10 +392,10 @@
             position: fixed;
             top: 60px; /* mais próximo do topo */
             right: 40px; /* mais próximo dos cards, diminua se quiser mais perto */
-            width: 520px; /* mais largo */
+            width: 900px; /* mais largo */
             max-width: 95vw;
             min-width: 380px;
-            height: auto;
+            height: auto; ,
             max-height: calc(100vh - 80px);
             background: #fff;
             box-shadow: -2px 0 16px rgba(0,0,0,0.12);
@@ -393,6 +410,21 @@
             from { opacity: 0; right: -40px; }
             to { opacity: 1; right: 0; }
         }
+
+        p.limite-duas-linhas {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;      /* número de linhas */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        }
+
+        media (max-width: 730px) {
+            .painel_detalhes_flutuante{
+                width: auto;
+            }
+        }
+
     </style>
 </body>
 </html>

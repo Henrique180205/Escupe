@@ -1,0 +1,168 @@
+:root {
+    --fonte1: 'Satoshi', sans-serif;
+    --fonte2: 'Inter', sans-serif;
+    --cor1: #2755F8;  /* azul principal */
+    --cor2: #131313;  /* preto escuro */
+    --cor-tabela-zebra: #f1f1f1;
+    --radius: 12px;
+    --sombra: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fonte1);
+    background-color: white;
+    color: var(--cor2);
+    padding: 20px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    color: var(--cor2);
+    font-family: var(--fonte2);
+    text-align: center;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--sombra);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.button {
+    background-color: var(--cor2);
+    color: white;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    font-size: 0.9em;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: var(--fonte1);
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    width: 50px;
+    text-align: center;
+    max-width: 200px;
+    display: block;
+    margin: auto;
+}
+
+.button:hover {
+    background-color: #1d3fc9;
+}
+
+.form-vaga {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: var(--fonte1);
+}
+
+.form-vaga th,
+.form-vaga td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.form-vaga th {
+    background-color: var(--cor1);
+    color: white;
+    font-weight: 500;
+}
+
+.form-vaga tr:nth-child(even) {
+    background-color: var(--cor-tabela-zebra);
+}
+
+.form-vaga a {
+    color: var(--cor1);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form-vaga a:hover {
+    text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-vaga th,
+    .form-vaga td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 780px) {
+    .form-vaga thead {
+        display: none;
+    }
+
+    .form-vaga, 
+    .form-vaga tbody, 
+    .form-vaga tr, 
+    .form-vaga td {
+        display: block;
+        width: 100%;
+    }
+
+    .form-vaga tr {
+        margin-bottom: 15px;
+        background-color: white;
+        padding: 10px;
+        border-radius: var(--radius);
+        box-shadow: var(--sombra);
+    }
+
+    .form-vaga td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        font-size: 0.85rem;
+    }
+
+    .form-vaga td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: var(--cor2);
+    }
+}

@@ -5,79 +5,100 @@
 }
 <link rel="stylesheet" href="~/css/criarvagas.css" />
 
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de vagas</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/vagas.css")">
+    <link rel="stylesheet" href="~/css/criarvagas.css">
+    <link rel="stylesheet" href="~/css/minhasvagas.css">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+</head>
+
 <div class="form-container">
-    <h1>Minhas Vagas Criadas</h1>
-    <a asp-action="CriarVaga" class="form-vaga button">Criar Nova Vaga</a>
-    <table class="form-vaga" style="margin-top:20px;">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Localização</th>
-                <th>Salário</th>
-                <th>Data de Criação</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var vaga in Model)
-            {
+    <div>
+        <h1>Minhas Vagas Criadas</h1>
+        <a asp-action="CriarVaga" class="form-vaga button">Criar Nova Vaga</a>
+        <table class="form-vaga" style="margin-top:20px;">
+            <thead>
                 <tr>
-                    <td>@vaga.Titulo</td>
-                    <td>@vaga.Localizacao</td>
-                    <td>@vaga.Salario.ToString("C")</td>
-                    <td>@vaga.DataPublicacao.ToShortDateString()</td>
-                    <td>
-                        <a asp-action="EditarVaga" asp-route-id="@vaga.Id">Editar</a> |
-                        <a href="#" onclick="mostrarCandidatos(@vaga.Id);return false;">Ver Candidatos</a>
-                    </td>
+                    <th>Título</th>
+                    <th>Localização</th>
+                    <th>Salário</th>
+                    <th>Data de Criação</th>
+                    <th>Ações</th>
                 </tr>
-                <tr id="candidatos-@vaga.Id" style="display:none;">
-                    <td colspan="5">
-                        <strong>Candidatos Inscritos:</strong>
-                        @if (vaga.Candidatos != null && vaga.Candidatos.Any())
-                        {
-                            <table style="width:100%;margin-top:10px;">
-                                <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>Título Profissional</th>
-                                        <th>Data da Candidatura</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var candidato in vaga.Candidatos)
-                                    {
+            </thead>
+            <tbody>
+                @foreach (var vaga in Model)
+                {
+                    <tr>
+                        <td>@vaga.Titulo</td>
+                        <td>@vaga.Localizacao</td>
+                        <td>@vaga.Salario.ToString("C")</td>
+                        <td>@vaga.DataPublicacao.ToShortDateString()</td>
+                        <td>
+                            <a asp-action="EditarVaga" asp-route-id="@vaga.Id">Editar</a> |
+                            <a href="#" onclick="mostrarCandidatos(@vaga.Id);return false;">Ver Candidatos</a>
+                        </td>
+                    </tr>
+                    <tr id="candidatos-@vaga.Id" style="display:none;">
+                        <td colspan="5">
+                            <strong>Candidatos Inscritos:</strong>
+                            @if (vaga.Candidatos != null && vaga.Candidatos.Any())
+                            {
+                                <table style="width:100%;margin-top:10px;">
+                                    <thead>
                                         <tr>
-                                            <td>@candidato.Nome</td>
-                                            <td>@candidato.TituloProfissional</td>
-                                            <td>@candidato.DataCandidatura.ToShortDateString()</td>
-                                            <td>@candidato.Status</td>
-                                            <td>
-                                                @if (!string.IsNullOrEmpty(candidato.CurriculoPath))
-                                                {
-                                                    <a href="@candidato.CurriculoPath" target="_blank">Baixar Currículo</a>
-                                                }
-                                                else
-                                                {
-                                                    <span>Não enviado</span>
-                                                }
-                                            </td>
+                                            <th>Nome</th>
+                                            <th>Título Profissional</th>
+                                            <th>Data da Candidatura</th>
+                                            <th>Status</th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                        else
-                        {
-                            <div>Nenhum candidato inscrito.</div>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var candidato in vaga.Candidatos)
+                                        {
+                                            <tr>
+                                                <td>@candidato.Nome</td>
+                                                <td>@candidato.TituloProfissional</td>
+                                                <td>@candidato.DataCandidatura.ToShortDateString()</td>
+                                                <td>@candidato.Status</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(candidato.CurriculoPath))
+                                                    {
+                                                        <a href="@candidato.CurriculoPath" target="_blank">Baixar Currículo</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Não enviado</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <div>Nenhum candidato inscrito.</div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<style>
+    .form-container {
+        width: auto;
+        display: flex;
+    }
+</style>
 
 <script>
     function mostrarCandidatos(id) {
@@ -89,4 +110,3 @@
         }
     }
 </script>
-

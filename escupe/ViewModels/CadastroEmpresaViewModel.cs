@@ -18,7 +18,7 @@ namespace escupe.ViewModels
         public string CNPJ { get; set; }
 
         [Required(ErrorMessage = "O telefone é obrigatório.")]
-        [Phone(ErrorMessage = "O telefone informado não é válido.")]
+       
         public string Telefone { get; set; }
 
         // Endereço
@@ -41,7 +41,7 @@ namespace escupe.ViewModels
         public string UF { get; set; }
 
         [Required(ErrorMessage = "O CEP é obrigatório.")]
-        [RegularExpression(@"^\d{8}$", ErrorMessage = "O CEP deve conter 8 dígitos.")]
+        
         public string CEP { get; set; }
         // Campos adicionais para transferência de dados
         public string Email { get; set; }

@@ -13,7 +13,52 @@ public class FeedController : Controller
     {
         _context = context;
     }
+    // GET: Feed/EditarVaga/5
+    [HttpGet]
+    public IActionResult EditarVaga(int id)
+    {
+        var vaga = _context.Vagas.FirstOrDefault(v => v.Id == id);
+        if (vaga == null)
+            return NotFound();
 
+        var model = new CriarVagaViewModel
+        {
+            Id = vaga.Id,
+            Titulo = vaga.Titulo,
+            Localizacao = vaga.Localizacao,
+            Salario = vaga.Salario.ToString("F2"),
+            Descricao = vaga.Descricao,
+            Beneficios = vaga.Beneficios
+        };
+
+        return View(model); // Retorna a view EditarVaga.cshtml com o model preenchido
+    }
+
+    // POST: Feed/EditarVaga
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult EditarVaga(CriarVagaViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var vaga = _context.Vagas.FirstOrDefault(v => v.Id == model.Id);
+        if (vaga == null)
+            return NotFound();
+
+        vaga.Titulo = model.Titulo;
+        vaga.Localizacao = model.Localizacao;
+        decimal salarioDecimal = 0;
+        decimal.TryParse(model.Salario, out salarioDecimal);
+        vaga.Salario = salarioDecimal;
+        vaga.Descricao = model.Descricao;
+        vaga.Beneficios = model.Beneficios;
+
+        _context.SaveChanges();
+
+        ViewBag.MensagemSucesso = "Vaga editada com sucesso!";
+        return View(model); // Retorna para a mesma view
+    }
 
 
     [HttpPost]
@@ -140,10 +185,16 @@ public class FeedController : Controller
         return View(empresa);
     }
 
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult PerfilEmpresa(Empresa model)
     {
+        ModelState.Remove(nameof(model.RazaoSocial));
+        ModelState.Remove(nameof(model.Site));
+        ModelState.Remove(nameof(model.TipoUsuario));
+        ModelState.Remove(nameof(model.Vagas));
+        ModelState.Remove(nameof(model.Endereco));
         if (!ModelState.IsValid)
         {
             return View(model);

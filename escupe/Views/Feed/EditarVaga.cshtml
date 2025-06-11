@@ -1,0 +1,98 @@
+﻿@model escupe.ViewModels.CriarVagaViewModel
+@{
+    ViewData["Title"] = "Editar Vaga";
+    Layout = null;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/criarvagas.css" asp-append-version="true" />
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar vaga</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/criarvagas.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,700;1,14..32,700&display=swap" rel="stylesheet" />
+</head>
+
+<header class="site-header">
+    <a asp-controller="Feed" asp-action="HomeEmpresa" class="icone-container">
+        <img src="~/imagens/image.png" alt="Logo do site" class="site-logo">
+        <span class="site-nome">Esculp</span>
+    </a>
+</header>
+
+<main class="form-container">
+   
+    <form id="formEditarVaga" asp-action="EditarVaga" asp-controller="Feed" method="post" class="form-vaga">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <div class="campo">
+            <label for="titulo">Título da Vaga</label>
+            <input type="text" id="titulo" name="titulo" value="@Model.Titulo" required>
+        </div>
+        <div class="campo">
+            <label for="localizacao">Localização (Cidade - Estado)</label>
+            <input type="text" id="localizacao" name="Localizacao" value="@Model.Localizacao" required>
+
+        </div>
+        <div class="campo">
+            <label for="salario">Faixa Salarial</label>
+            <input type="text" id="salario" name="salario" value="@Model.Salario">
+        </div>
+        <div class="campo">
+            <label for="descricao">Descrição da Vaga</label>
+            <textarea id="descricao" name="descricao" rows="6">@Model.Descricao</textarea>
+        </div>
+        <div class="campo">
+            <label for="beneficios">Benefícios</label>
+            <textarea id="beneficios" name="beneficios" rows="4">@Model.Beneficios</textarea>
+        </div>
+        <div id="notificacaoVaga" class="mensagem-flutuante"></div>
+        <button type="submit">Salvar Alterações</button>
+    </form>
+</main>
+
+<style>
+    .form-vaga button {
+        width: 100%;
+    }
+
+    textarea {
+        max-width: 100%;
+        min-width: 100%;
+        min-height: auto;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.getElementById('formEditarVaga').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Inclui o token antiforgery
+            const token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'RequestVerificationToken': token
+                }
+            });
+
+            if (response.ok) {
+                document.getElementById('notificacaoVaga').innerText = "Vaga editada com sucesso!";
+                setTimeout(() => window.location.href = '/Feed/HomeEmpresa', 1500);
+            } else {
+                document.getElementById('notificacaoVaga').innerText = "Erro ao editar vaga.";
+            }
+        });
+    </script>
+    
+}

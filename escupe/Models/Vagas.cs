@@ -13,4 +13,6 @@ public class Vaga
     public DateTime DataPublicacao { get; set; }
     public int EmpresaId { get; set; } // Relacionamento com a empresa
     public Empresa Empresa { get; set; } // Propriedade de navegação
+
+ 
 }

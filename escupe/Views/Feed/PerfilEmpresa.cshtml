@@ -1,13 +1,16 @@
-﻿
-
-@model escupe.Models.Empresa
+﻿@model escupe.Models.Empresa
 @{
     ViewData["Title"] = "Editar Perfil";
-  
+   Layout = null;
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/editar.css" />
+}
+
 
 <div class="container">
     <h1>Editar Perfil</h1>
+    <link rel="stylesheet" href="~/css/editar.css" />
     <form asp-action="PerfilEmpresa" method="post" class="formulario">
         @Html.AntiForgeryToken()
         <section>
@@ -58,21 +61,13 @@
     </form>
 </div>
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/editar.css" />
-}
+
 
 @section Scripts {
     <script>
+        // Remova o event.preventDefault() para permitir o submit normal
         const formulario = document.querySelector('.formulario');
         const mensagem = document.getElementById('mensagem-sucesso');
-
-        formulario.addEventListener('submit', function(event) {
-            event.preventDefault();
-            mensagem.classList.add('mostrar');
-            setTimeout(() => {
-                mensagem.classList.remove('mostrar');
-            }, 3000);
-        });
+        // Se quiser mostrar mensagem após submit, faça isso no backend e exiba via ViewBag
     </script>
 }
